@@ -1,0 +1,39 @@
+trends_task:
+  description: >
+    Find the top 2025 market trends for the given product or industry using web search and summarize them.
+  expected_output: >
+    A markdown-formatted list of 5-7 bullet points, each stating a trend, a 1-2 sentence explanation, and a link.
+  agent: trends_researcher
+
+competitors_task:
+  description: >
+    List the top competitors for this market/industry, and prepare a SWOT grid (Strengths, Weaknesses, Opportunities, Threats) for each.
+  expected_output: >
+    A table of at least three competitors with SWOT details, plus a summary note.
+  agent: competitor_analyst
+  reasoning: true
+  max_reasoning_attempts: 2
+
+insights_task:
+  description: >
+    Review the above research, extract 3-5 key insights, spot correlations and propose at least two recommendations.
+  expected_output: >
+    A sectioned summary ("Key Insights", "Recommendations") using information from above tasks.
+  context:
+    - trends_task
+    - competitors_task
+  agent: insights_synthesizer
+  reasoning: true
+  max_reasoning_attempts: 3
+
+editor_task:
+  description: >
+    Organize, polish and format all above information into a professional market research report, suitable for an executive.
+  expected_output: >
+    Final markdown report, ready to publish.
+  agent: executive_editor
+  context:
+    - trends_task
+    - competitors_task
+    - insights_task
+  output_file: ../output/research_report.md
