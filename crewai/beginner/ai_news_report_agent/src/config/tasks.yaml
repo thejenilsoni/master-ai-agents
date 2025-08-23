@@ -1,0 +1,19 @@
+find_news_task:
+  description: >
+    Search for the five most relevant and current news articles on {topic} using your search skills.
+    Return a short summary with titles and sources for each one.
+  expected_output: >
+    A bullet-pointed list with 5 news article titles, a 1-2 line summary for each, and the original source link.
+  agent: news_finder
+
+write_report_task:
+  description: >
+    Write a polished, reader-friendly news report synthesizing the findings provided.
+    Expand on each bullet, group related themes, and ensure smooth flow and clear language.
+    The target audience is general news readers.
+  expected_output: >
+    A cohesive, markdown-formatted news article with sections/paragraphs for each theme, suitable for direct publication.
+  agent: news_writer
+  output_file: report.md
+  context:
+    - find_news_task
