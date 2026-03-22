@@ -13,7 +13,7 @@ This project leverages OpenAI's Agent SDK, Streamlit, and various tools to autom
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/jenilsoni-ai/master-ai-agents.git
+git clone https://github.com/thejenilsoni/master-ai-agents.git
 cd master-ai-agents/openai-agents-sdk/intermediate/linkedin-agency-outreach-system/
 ```
 

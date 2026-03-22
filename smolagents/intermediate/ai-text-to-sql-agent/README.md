@@ -20,7 +20,7 @@ A user-friendly agent that converts natural language questions into SQL queries 
 
 1. Clone the repository and navigate to this directory:
    ```bash
-   git clone https://github.com/jenilsoni-ai/master-ai-agents.git
+   git clone https://github.com/thejenilsoni/master-ai-agents.git
    cd master-ai-agents/smolagents/intermediate/ai-text-to-sql-agent
    ```
 
