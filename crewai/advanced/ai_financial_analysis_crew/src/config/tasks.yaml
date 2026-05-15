@@ -1,0 +1,83 @@
+market_data_task:
+  description: >
+    Use the stock_data tool to fetch current market and fundamental data for
+    {company} ({ticker}). Present the key figures (price, market cap, valuation
+    multiples, margins, growth, 52-week range, 6-month return, beta) in a clean
+    markdown table and note anything unusual.
+  expected_output: >
+    A markdown table of the company's key market and fundamental metrics, plus a
+    short note on data quality or anything notable.
+  agent: market_data_analyst
+
+sentiment_task:
+  description: >
+    Search for the most important recent news on {company} from roughly the last
+    three months. Summarize the top catalysts and judge the overall sentiment as
+    Bullish, Bearish, or Mixed, with reasoning and source links.
+  expected_output: >
+    A bulleted summary of 4-6 key news items with links, followed by an overall
+    sentiment verdict (Bullish / Bearish / Mixed) and a one-paragraph rationale.
+  agent: news_sentiment_analyst
+
+fundamentals_task:
+  description: >
+    Using the market data above, analyze {company}'s valuation, growth, and
+    profitability. Are the multiples justified? How does quality look? Call out
+    strengths and weaknesses explicitly.
+  expected_output: >
+    A "Fundamental Analysis" section covering Valuation, Growth, Profitability,
+    and a short verdict on whether the stock looks cheap, fair, or expensive.
+  context:
+    - market_data_task
+  agent: fundamental_analyst
+  reasoning: true
+  max_reasoning_attempts: 3
+
+risk_task:
+  description: >
+    Drawing on the data, news, and fundamentals, enumerate the most important
+    risks to an investment in {company}. Rank them by severity and note any
+    mitigants.
+  expected_output: >
+    A ranked "Key Risks" list (highest severity first), each with a one-line
+    explanation and any mitigant.
+  context:
+    - market_data_task
+    - sentiment_task
+    - fundamentals_task
+  agent: risk_analyst
+  reasoning: true
+  max_reasoning_attempts: 2
+
+recommendation_task:
+  description: >
+    Synthesize everything into a clear investment recommendation for {company}:
+    Buy, Hold, or Sell. State your conviction (Low/Medium/High), a suggested time
+    horizon, the core thesis, and what would change your mind.
+  expected_output: >
+    A "Recommendation" section beginning with a bold call (Buy/Hold/Sell), then
+    conviction, horizon, the 3-point thesis, and bull/bear scenarios.
+  context:
+    - sentiment_task
+    - fundamentals_task
+    - risk_task
+  agent: investment_advisor
+  reasoning: true
+  max_reasoning_attempts: 3
+
+editor_task:
+  description: >
+    Organize all of the above into a professional equity research brief on
+    {company} ({ticker}). Lead with an executive summary and the recommendation,
+    then the supporting sections. Keep it crisp and well formatted.
+  expected_output: >
+    A complete, well-structured markdown equity research brief ready to share with
+    an investment committee.
+  context:
+    - market_data_task
+    - sentiment_task
+    - fundamentals_task
+    - risk_task
+    - recommendation_task
+  agent: report_editor
+  output_file: ../output/equity_research_brief.md
