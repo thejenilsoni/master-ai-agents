@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment / secrets
+.env
+*.env
+!.env.example
+.streamlit/secrets.toml
+
+# Generated agent artifacts
+output/
+storage/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
