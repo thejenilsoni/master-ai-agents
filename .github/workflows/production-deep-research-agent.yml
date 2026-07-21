@@ -1,0 +1,29 @@
+name: Production Deep Research Agent
+
+on:
+  pull_request:
+    paths:
+      - "openai-agents-sdk/advanced/production-deep-research-agent/**"
+      - ".github/workflows/production-deep-research-agent.yml"
+  push:
+    branches: [main]
+    paths:
+      - "openai-agents-sdk/advanced/production-deep-research-agent/**"
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: openai-agents-sdk/advanced/production-deep-research-agent
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy src
+      - run: pytest --cov=deep_research_agent --cov-report=term-missing --cov-fail-under=75

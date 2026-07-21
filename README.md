@@ -17,6 +17,7 @@ Browse a variety of AI-powered applications, organized by framework and use case
 - **Intermediate**
   - [LinkedIn Agency Outreach System](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/intermediate/linkedin-agency-outreach-system): Automates LinkedIn outreach for agencies.
 - **Advanced**
+  - [Production Deep Research Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/advanced/production-deep-research-agent): Evidence-first parallel research with source normalization, contradiction analysis, citation auditing, adversarial critique, persistence, evaluations, and human approval.
   - [Startup Idea Validator System](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/advanced/startup-idea-validator-system): Validates startup ideas using advanced agent workflows.
 
 ---

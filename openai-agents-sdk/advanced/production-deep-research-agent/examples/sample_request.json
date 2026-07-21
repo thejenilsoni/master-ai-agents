@@ -1,0 +1,13 @@
+{
+  "query": "Which production patterns make multi-agent systems reliable, and what evidence supports each pattern?",
+  "depth": "deep",
+  "audience": "AI engineering leaders",
+  "constraints": [
+    "Prefer primary sources and official technical documentation",
+    "Separate evidence from inference",
+    "Include counterarguments and operational trade-offs"
+  ],
+  "required_domains": [],
+  "excluded_domains": [],
+  "recency_days": 730
+}
