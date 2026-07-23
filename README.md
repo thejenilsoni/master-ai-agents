@@ -36,6 +36,7 @@ self-correcting loops — and to see how each framework expresses the same ideas
 - **Beginner** — [Multi-Domain Research Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/beginner/multi-domain-research-agent): Routes a query to domain-specific agents and writes a structured report.
 - **Intermediate** — [LinkedIn Agency Outreach System](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/intermediate/linkedin-agency-outreach-system): Handoff-based agents that research a lead and draft personalized outreach.
 - **Advanced** — [Startup Idea Validator System](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/advanced/startup-idea-validator-system): An agents-as-tools manager orchestrates five specialists and emits a structured, scored verdict.
+- **Advanced** — [Production Deep Research Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/advanced/production-deep-research-agent): Evidence-first parallel research with source normalization, contradiction analysis, deterministic citation auditing, adversarial critique, SQLite persistence, evaluations, and human approval.
 
 ### CrewAI
 - **Beginner** — [AI News Report Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/crewai/beginner/ai_news_report_agent): A finder + writer crew that produces a news report on any topic.
