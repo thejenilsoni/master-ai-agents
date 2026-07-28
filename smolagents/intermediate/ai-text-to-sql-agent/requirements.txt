@@ -1,0 +1,5 @@
+smolagents[litellm]
+sqlalchemy
+pandas
+streamlit
+python-dotenv
