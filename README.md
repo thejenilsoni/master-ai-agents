@@ -9,6 +9,11 @@ The goal is to learn agentic patterns *across* frameworks: tool calling, RAG,
 multi-agent orchestration, handoffs, structured outputs, stateful graphs, and
 self-correcting loops — and to see how each framework expresses the same ideas.
 
+> 📚 **New here?** Start with the [**Learning Path**](docs/LEARNING_PATH.md) — a
+> guided curriculum from your first tool-calling agent to a production-shaped
+> multi-agent system. The [**Concepts Glossary**](docs/concepts.md) defines every
+> agentic pattern and links it to the project that demonstrates it.
+
 ---
 
 ## 🧩 Frameworks covered
@@ -31,6 +36,7 @@ self-correcting loops — and to see how each framework expresses the same ideas
 ### LangGraph
 - **Beginner** — [AI Customer Support Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/langgraph/beginner/ai-customer-support-agent): A tool-using ReAct support agent with stateful, multi-turn memory.
 - **Intermediate** — [AI Research Report Pipeline](https://github.com/thejenilsoni/master-ai-agents/tree/main/langgraph/intermediate/ai-research-report-pipeline): An explicit `StateGraph` (plan → research → write → critique) with a self-correcting revision loop.
+- **Advanced** — [AI Supervisor Research Team](https://github.com/thejenilsoni/master-ai-agents/tree/main/langgraph/advanced/ai-supervisor-research-team): A supervisor agent routes work to researcher, analyst, and writer specialists over a bounded `StateGraph`.
 
 ### OpenAI Agents SDK
 - **Beginner** — [Multi-Domain Research Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/openai-agents-sdk/beginner/multi-domain-research-agent): Routes a query to domain-specific agents and writes a structured report.
@@ -48,6 +54,7 @@ self-correcting loops — and to see how each framework expresses the same ideas
 
 ### Pydantic AI
 - **Beginner** — [AI Bank Support Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/pydantic-ai/beginner/ai-bank-support-agent): Type-safe support agent with dependency injection and validated structured output.
+- **Intermediate** — [AI SQL Analyst Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/pydantic-ai/intermediate/ai-sql-analyst-agent): Answers plain-English questions over a seeded SQLite database with read-only SQL guardrails and typed results.
 
 ### LlamaIndex
 - **Intermediate** — [AI Document Q&A Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/llamaindex/intermediate/ai-document-qa-agent): A RAG agent over local documents, exposed to a ReAct agent as a tool.
@@ -104,5 +111,9 @@ master-ai-agents/
 Contributions are welcome! If you have ideas, improvements, or new agents to add,
 please open a GitHub Issue or submit a pull request. New frameworks and use cases
 are especially appreciated.
+
+See [**CONTRIBUTING.md**](CONTRIBUTING.md) for the project layout, naming rules,
+the difficulty rubric, and the standard README template that keeps every project
+consistent. Licensed under [MIT](LICENSE).
 
 ---
