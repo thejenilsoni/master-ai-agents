@@ -52,7 +52,8 @@ later project builds on.
 | Project | Framework | You'll learn |
 | --- | --- | --- |
 | [Research Report Pipeline](../langgraph/intermediate/ai-research-report-pipeline) | LangGraph | An explicit `StateGraph` with a self-correcting critique loop. |
-| [Document Q&A Agent](../llamaindex/intermediate/ai-document-qa-agent) | LlamaIndex | Retrieval-Augmented Generation (RAG) over your own docs. |
+| [Knowledge Base Q&A](../llamaindex/beginner/ai-knowledge-base-qa) | LlamaIndex | The minimal RAG pipeline — index docs, answer with cited sources. |
+| [Document Q&A Agent](../llamaindex/intermediate/ai-document-qa-agent) | LlamaIndex | RAG wrapped as a tool inside a ReAct agent. |
 | [SQL Analyst Agent](../pydantic-ai/intermediate/ai-sql-analyst-agent) | Pydantic AI | A tool-use loop over a database, with read-only guardrails. |
 | [Text-to-SQL Agent](../smolagents/intermediate/ai-text-to-sql-agent) | smolagents | Turning natural language into SQL and running it. |
 | [Customer Support Agent](../google-adk/intermediate/ai_customer_support_agent) | Google ADK | Tool routing across multiple backend functions. |
@@ -72,6 +73,8 @@ code execution.
 | [LinkedIn Outreach System](../openai-agents-sdk/intermediate/linkedin-agency-outreach-system) | OpenAI Agents SDK | Handoffs between specialized agents. |
 | [News Report / Market Research](../crewai/beginner/ai_news_report_agent) | CrewAI | Role-based crews configured in YAML. |
 | [Coding Assistant](../autogen/beginner/ai-coding-assistant) | AutoGen | A conversational team that writes and *runs* code in a loop. |
+| [Content Review Team](../autogen/intermediate/ai-content-review-team) | AutoGen | A `SelectorGroupChat` where an LLM picks the next speaker. |
+| [Support Triage System](../pydantic-ai/advanced/ai-support-triage-system) | Pydantic AI | Agent delegation — a triage agent routes to specialist sub-agents. |
 | [Startup Idea Validator](../openai-agents-sdk/advanced/startup-idea-validator-system) | OpenAI Agents SDK | The agents-as-tools "manager" pattern with scored output. |
 
 > **Checkpoint:** you can decide when a problem needs multiple agents, and pick

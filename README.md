@@ -51,12 +51,15 @@ self-correcting loops — and to see how each framework expresses the same ideas
 
 ### AutoGen
 - **Beginner** — [AI Coding Assistant](https://github.com/thejenilsoni/master-ai-agents/tree/main/autogen/beginner/ai-coding-assistant): A coder + executor team that writes and *runs* Python in a sandbox loop.
+- **Intermediate** — [AI Content Review Team](https://github.com/thejenilsoni/master-ai-agents/tree/main/autogen/intermediate/ai-content-review-team): A planner/writer/reviewer team using a `SelectorGroupChat`, where an LLM picks who speaks next.
 
 ### Pydantic AI
 - **Beginner** — [AI Bank Support Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/pydantic-ai/beginner/ai-bank-support-agent): Type-safe support agent with dependency injection and validated structured output.
 - **Intermediate** — [AI SQL Analyst Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/pydantic-ai/intermediate/ai-sql-analyst-agent): Answers plain-English questions over a seeded SQLite database with read-only SQL guardrails and typed results.
+- **Advanced** — [AI Support Triage System](https://github.com/thejenilsoni/master-ai-agents/tree/main/pydantic-ai/advanced/ai-support-triage-system): A triage agent delegates to billing and technical specialist sub-agents and returns a typed, routed result.
 
 ### LlamaIndex
+- **Beginner** — [AI Knowledge Base Q&A](https://github.com/thejenilsoni/master-ai-agents/tree/main/llamaindex/beginner/ai-knowledge-base-qa): The minimal RAG pipeline — index local docs and answer questions with cited source passages.
 - **Intermediate** — [AI Document Q&A Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/llamaindex/intermediate/ai-document-qa-agent): A RAG agent over local documents, exposed to a ReAct agent as a tool.
 
 ### Google ADK

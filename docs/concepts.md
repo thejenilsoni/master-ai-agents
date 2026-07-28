@@ -56,7 +56,8 @@ agent loop — easier to reason about, debug, and bound.
 ### Retrieval-Augmented Generation (RAG)
 Ground the model's answers in your own documents by retrieving relevant chunks
 and feeding them in as context.
-- [LlamaIndex · Document Q&A](../llamaindex/intermediate/ai-document-qa-agent)
+- [LlamaIndex · Knowledge Base Q&A](../llamaindex/beginner/ai-knowledge-base-qa) (the minimal pipeline)
+- [LlamaIndex · Document Q&A](../llamaindex/intermediate/ai-document-qa-agent) (RAG as an agent tool)
 
 ### Text-to-SQL
 Turn a natural-language question into a database query, run it, and answer from
@@ -78,10 +79,17 @@ until it meets a quality bar.
 One agent hands the conversation to another, more specialized agent.
 - [OpenAI Agents SDK · LinkedIn Outreach](../openai-agents-sdk/intermediate/linkedin-agency-outreach-system)
 
-### Agents-as-tools (manager pattern)
+### Agents-as-tools (manager pattern) & agent delegation
 A manager agent calls other agents *as if they were tools*, composing their
-outputs.
+outputs. In Pydantic AI this is called *agent delegation* — a parent agent's
+tool runs a sub-agent and shares the parent's usage accounting.
 - [OpenAI Agents SDK · Startup Validator](../openai-agents-sdk/advanced/startup-idea-validator-system)
+- [Pydantic AI · Support Triage System](../pydantic-ai/advanced/ai-support-triage-system)
+
+### Group chat with dynamic speaker selection
+Several agents share one conversation and a selector decides who speaks next,
+so the flow adapts to the work instead of following a fixed order.
+- [AutoGen · Content Review Team](../autogen/intermediate/ai-content-review-team) (`SelectorGroupChat`)
 
 ### Supervisor orchestration
 A supervisor routes work to specialist agents turn by turn and decides when the
