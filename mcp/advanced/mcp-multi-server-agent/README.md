@@ -135,11 +135,14 @@ retro — all describing the rule that every incoming path is resolved and then
 checked against the sandbox root.
 ```
 
-With a server missing, the run degrades instead of failing:
+With a server missing, the run degrades instead of failing — the failure is
+reported on stderr and the agent carries on with the servers that answered:
 
 ```
-  [server 'database' unavailable: FileNotFoundError: ...database_server.py]
+  [server 'database' unavailable: MCPError: Connection closed]
 Connected to 2/3 server(s), 6 tool(s) aggregated:
+  bookshelf    bookshelf__search  (from search)
+  ...
 ```
 
 ## Extending this project

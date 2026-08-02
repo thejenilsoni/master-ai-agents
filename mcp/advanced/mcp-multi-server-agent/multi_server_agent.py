@@ -261,6 +261,23 @@ def catalog_summary(catalog: list[CatalogEntry]) -> str:
 Connector = Callable[[AsyncExitStack, ServerSpec], Awaitable[Any]]
 
 
+def sdk_input_schema(tool: Any) -> dict[str, Any]:
+    """Read a tool's JSON Schema off an SDK object.
+
+    The Python SDK spells this `input_schema` in 2.x and `inputSchema` in 1.x, so
+    accept either rather than pinning the agent to one release.
+    """
+    schema = getattr(tool, "input_schema", None)
+    if schema is None:
+        schema = getattr(tool, "inputSchema", None)
+    return dict(schema or {})
+
+
+def sdk_is_error(result: Any) -> bool:
+    """True when a tool result is flagged as an error (`is_error` / `isError`)."""
+    return bool(getattr(result, "is_error", False) or getattr(result, "isError", False))
+
+
 class _McpSession:
     """Adapts a real MCP ClientSession to the two methods the hub needs."""
 
@@ -273,7 +290,7 @@ class _McpSession:
             ToolSpec(
                 name=tool.name,
                 description=tool.description or "",
-                input_schema=dict(tool.inputSchema or {}),
+                input_schema=sdk_input_schema(tool),
             )
             for tool in listing.tools
         ]
@@ -285,7 +302,7 @@ class _McpSession:
             text = getattr(block, "text", None)
             parts.append(text if isinstance(text, str) else f"[{getattr(block, 'type', '?')}]")
         rendered = "\n".join(part for part in parts if part) or "(no content)"
-        return f"ERROR: {rendered}" if getattr(result, "isError", False) else rendered
+        return f"ERROR: {rendered}" if sdk_is_error(result) else rendered
 
 
 async def connect_stdio_server(stack: AsyncExitStack, spec: ServerSpec) -> _McpSession:
@@ -706,6 +723,23 @@ def _selftest() -> None:
         await _no_servers_at_all()
 
     asyncio.run(_run_all())
+
+    # SDK attribute renames (2.x snake_case, 1.x camelCase) are both handled.
+    class _SdkTool:
+        def __init__(self, attribute: str) -> None:
+            setattr(self, attribute, {"type": "object", "properties": {"q": {}}})
+
+    assert sdk_input_schema(_SdkTool("input_schema"))["properties"] == {"q": {}}
+    assert sdk_input_schema(_SdkTool("inputSchema"))["properties"] == {"q": {}}
+    assert sdk_input_schema(object()) == {}
+
+    class _SdkResult:
+        def __init__(self, attribute: str, value: bool) -> None:
+            setattr(self, attribute, value)
+
+    assert sdk_is_error(_SdkResult("is_error", True)) is True
+    assert sdk_is_error(_SdkResult("isError", True)) is True
+    assert sdk_is_error(_SdkResult("is_error", False)) is False
 
     # Argument parsing shares the loop's error contract.
     assert parse_arguments(None) == {}
