@@ -1,0 +1,24 @@
+Glossary
+
+backlog
+    The ordered list of work that is not yet started. Anything not in the
+    backlog is not planned.
+
+on-call
+    The engineer responsible for responding to alerts during a shift. The rota
+    rotates weekly.
+
+rota
+    The published schedule of who is responsible for what, and when.
+
+sandbox
+    A directory that a process is allowed to read and nothing outside it. Every
+    incoming path is resolved first, then checked against the sandbox root, so a
+    relative path or a symlink cannot escape it.
+
+staging
+    A pre-production environment refreshed weekly from a scrubbed copy of
+    production data.
+
+starter
+    A backlog tag for tasks small enough to finish in a day, used for onboarding.
