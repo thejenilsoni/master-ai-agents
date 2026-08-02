@@ -52,6 +52,7 @@ self-correcting loops — and to see how each framework expresses the same ideas
 ### AutoGen
 - **Beginner** — [AI Coding Assistant](https://github.com/thejenilsoni/master-ai-agents/tree/main/autogen/beginner/ai-coding-assistant): A coder + executor team that writes and *runs* Python in a sandbox loop.
 - **Intermediate** — [AI Content Review Team](https://github.com/thejenilsoni/master-ai-agents/tree/main/autogen/intermediate/ai-content-review-team): A planner/writer/reviewer team using a `SelectorGroupChat`, where an LLM picks who speaks next.
+- **Advanced** — [AI Travel Planner Swarm](https://github.com/thejenilsoni/master-ai-agents/tree/main/autogen/advanced/ai-travel-planner-swarm): A `Swarm` where a coordinator hands off to flights/hotels/activities specialists — no central selector.
 
 ### Pydantic AI
 - **Beginner** — [AI Bank Support Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/pydantic-ai/beginner/ai-bank-support-agent): Type-safe support agent with dependency injection and validated structured output.
@@ -61,14 +62,17 @@ self-correcting loops — and to see how each framework expresses the same ideas
 ### LlamaIndex
 - **Beginner** — [AI Knowledge Base Q&A](https://github.com/thejenilsoni/master-ai-agents/tree/main/llamaindex/beginner/ai-knowledge-base-qa): The minimal RAG pipeline — index local docs and answer questions with cited source passages.
 - **Intermediate** — [AI Document Q&A Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/llamaindex/intermediate/ai-document-qa-agent): A RAG agent over local documents, exposed to a ReAct agent as a tool.
+- **Advanced** — [AI Agentic RAG with Sub-Question Routing](https://github.com/thejenilsoni/master-ai-agents/tree/main/llamaindex/advanced/ai-agentic-rag-router): Many indexes with a `SubQuestionQueryEngine` that decomposes complex questions across sources.
 
 ### Google ADK
 - **Beginner** — [AI Resume Evaluator Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/google-adk/beginner/ai_resume_evaluator_agent): Evaluates a resume against a job description and suggests rewrites.
 - **Intermediate** — [AI Customer Support Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/google-adk/intermediate/ai_customer_support_agent): A support agent with custom tools on Gemini.
+- **Advanced** — [AI Content Pipeline](https://github.com/thejenilsoni/master-ai-agents/tree/main/google-adk/advanced/ai_content_pipeline): A `SequentialAgent` chains outliner → writer → editor, sharing state between stages.
 
 ### Smol Agents
 - **Beginner** — [AI Research Assistant](https://github.com/thejenilsoni/master-ai-agents/tree/main/smolagents/beginner/ai-research-assistant): A minimal web-research agent that summarizes results with sources.
 - **Intermediate** — [AI Text-to-SQL Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/smolagents/intermediate/ai-text-to-sql-agent): Translates natural language into SQL and runs it against a database.
+- **Advanced** — [AI Research Manager](https://github.com/thejenilsoni/master-ai-agents/tree/main/smolagents/advanced/ai-research-manager): A manager `CodeAgent` orchestrates a managed web-search agent and computes with a custom tool.
 
 ---
 

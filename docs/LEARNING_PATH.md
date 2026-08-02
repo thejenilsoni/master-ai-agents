@@ -54,6 +54,7 @@ later project builds on.
 | [Research Report Pipeline](../langgraph/intermediate/ai-research-report-pipeline) | LangGraph | An explicit `StateGraph` with a self-correcting critique loop. |
 | [Knowledge Base Q&A](../llamaindex/beginner/ai-knowledge-base-qa) | LlamaIndex | The minimal RAG pipeline — index docs, answer with cited sources. |
 | [Document Q&A Agent](../llamaindex/intermediate/ai-document-qa-agent) | LlamaIndex | RAG wrapped as a tool inside a ReAct agent. |
+| [Agentic RAG Router](../llamaindex/advanced/ai-agentic-rag-router) | LlamaIndex | Many indexes + a sub-question engine that routes across sources. |
 | [SQL Analyst Agent](../pydantic-ai/intermediate/ai-sql-analyst-agent) | Pydantic AI | A tool-use loop over a database, with read-only guardrails. |
 | [Text-to-SQL Agent](../smolagents/intermediate/ai-text-to-sql-agent) | smolagents | Turning natural language into SQL and running it. |
 | [Customer Support Agent](../google-adk/intermediate/ai_customer_support_agent) | Google ADK | Tool routing across multiple backend functions. |
@@ -74,6 +75,9 @@ code execution.
 | [News Report / Market Research](../crewai/beginner/ai_news_report_agent) | CrewAI | Role-based crews configured in YAML. |
 | [Coding Assistant](../autogen/beginner/ai-coding-assistant) | AutoGen | A conversational team that writes and *runs* code in a loop. |
 | [Content Review Team](../autogen/intermediate/ai-content-review-team) | AutoGen | A `SelectorGroupChat` where an LLM picks the next speaker. |
+| [Travel Planner Swarm](../autogen/advanced/ai-travel-planner-swarm) | AutoGen | A `Swarm` — agents hand off to each other with no central selector. |
+| [Content Pipeline](../google-adk/advanced/ai_content_pipeline) | Google ADK | A `SequentialAgent` workflow threading state across stages. |
+| [Research Manager](../smolagents/advanced/ai-research-manager) | smolagents | A manager agent orchestrating a managed sub-agent. |
 | [Support Triage System](../pydantic-ai/advanced/ai-support-triage-system) | Pydantic AI | Agent delegation — a triage agent routes to specialist sub-agents. |
 | [Startup Idea Validator](../openai-agents-sdk/advanced/startup-idea-validator-system) | OpenAI Agents SDK | The agents-as-tools "manager" pattern with scored output. |
 

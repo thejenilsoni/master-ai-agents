@@ -58,6 +58,7 @@ Ground the model's answers in your own documents by retrieving relevant chunks
 and feeding them in as context.
 - [LlamaIndex · Knowledge Base Q&A](../llamaindex/beginner/ai-knowledge-base-qa) (the minimal pipeline)
 - [LlamaIndex · Document Q&A](../llamaindex/intermediate/ai-document-qa-agent) (RAG as an agent tool)
+- [LlamaIndex · Agentic RAG Router](../llamaindex/advanced/ai-agentic-rag-router) (many indexes + sub-question routing)
 
 ### Text-to-SQL
 Turn a natural-language question into a database query, run it, and answer from
@@ -75,9 +76,12 @@ until it meets a quality bar.
 
 ## Multi-agent orchestration
 
-### Handoffs
-One agent hands the conversation to another, more specialized agent.
-- [OpenAI Agents SDK · LinkedIn Outreach](../openai-agents-sdk/intermediate/linkedin-agency-outreach-system)
+### Handoffs & swarms
+One agent hands the conversation to another, more specialized agent. In a
+*swarm*, there is no central selector — the active agent decides who takes over
+next, so control flows peer to peer.
+- [OpenAI Agents SDK · LinkedIn Outreach](../openai-agents-sdk/intermediate/linkedin-agency-outreach-system) (handoffs)
+- [AutoGen · Travel Planner Swarm](../autogen/advanced/ai-travel-planner-swarm) (`Swarm`)
 
 ### Agents-as-tools (manager pattern) & agent delegation
 A manager agent calls other agents *as if they were tools*, composing their
@@ -90,6 +94,17 @@ tool runs a sub-agent and shares the parent's usage accounting.
 Several agents share one conversation and a selector decides who speaks next,
 so the flow adapts to the work instead of following a fixed order.
 - [AutoGen · Content Review Team](../autogen/intermediate/ai-content-review-team) (`SelectorGroupChat`)
+
+### Manager orchestrating managed sub-agents
+A manager agent calls whole sub-agents (each with their own tools and loop) as if
+they were tools, composing their results.
+- [smolagents · Research Manager](../smolagents/advanced/ai-research-manager) (`managed_agents`)
+
+### Sequential / workflow pipelines
+A fixed multi-stage pipeline where each stage is its own agent and state is
+threaded from one stage to the next — orchestration owned by code, reasoning by
+each stage's model.
+- [Google ADK · Content Pipeline](../google-adk/advanced/ai_content_pipeline) (`SequentialAgent`)
 
 ### Supervisor orchestration
 A supervisor routes work to specialist agents turn by turn and decides when the
