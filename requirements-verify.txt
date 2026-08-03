@@ -1,0 +1,14 @@
+# What `scripts/verify_projects.py` needs to run every self-test.
+#
+# Deliberately tiny. Self-tests must never need an API key, a network call to a
+# model provider, or a paid dependency -- that is what makes verifying the whole
+# repository free on every pull request. A handful of projects do legitimately
+# need a library to demonstrate their subject (structured output with pydantic,
+# dataframes with pandas), and pretending otherwise just means those self-tests
+# quietly never run.
+#
+# Adding to this file is a real cost: it slows CI for every project. Prefer
+# deferring the third-party import into the function that needs it, so the
+# offline path stays dependency-free.
+pydantic>=2.7,<3
+pandas>=2.0,<3

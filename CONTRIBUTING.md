@@ -72,11 +72,23 @@ LangGraph belongs under `rag/`.
    **Never commit binary assets.** If a project needs images, audio, or a large
    dataset, ship a small script that generates them locally and gitignore the
    output.
-5. **A `--selftest` (or test suite) that runs with no API key.** Put the model
-   behind a small interface and drive the tests with a deterministic fake, so the
-   real control flow is exercised offline. Defer third-party imports into the
-   functions that use them so the self-test works before dependencies are
-   installed. Document it under a `## Verify it without an API key` heading.
+5. **A `--selftest` (or test suite) that runs on a fresh checkout.** Put the
+   model behind a small interface and drive the tests with a deterministic fake,
+   so the real control flow is exercised offline. Two rules make the difference
+   between a self-test that runs in CI and one that only runs on your machine:
+
+   - **Defer third-party imports** into the functions that use them, so the
+     offline path needs nothing installed. `requirements-verify.txt` at the
+     repository root exists for the few cases where a library *is* the subject
+     (pydantic for structured output, pandas for dataframes) — adding to it
+     slows CI for every project, so treat it as a last resort.
+   - **Never depend on generated assets.** If a project ships a script that
+     writes sample images, audio, or data, the self-test must build its own
+     fixture instead of reading that output. Those files are gitignored, so a
+     clean checkout has none, and a self-test that skips when they are missing
+     reports success while testing nothing.
+
+   Document it under a `## Verify it without an API key` heading.
 6. **Deterministic code that owns the invariants** — let the model reason, but
    keep control flow, state, IDs, and limits in plain Python.
 

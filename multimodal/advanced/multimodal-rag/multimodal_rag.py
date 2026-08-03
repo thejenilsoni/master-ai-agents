@@ -383,10 +383,12 @@ IMAGE_ONLY_QUESTIONS = [
 
 
 def compare_text_only(question: str, expect: str,
-                      captioner=stub_caption) -> dict[str, object]:
+                      captioner=stub_caption,
+                      samples_dir: Path = SAMPLES_DIR) -> dict[str, object]:
     """Answer the same question with and without images in the index."""
-    with_images = ask(question, build_index(captioner=captioner, include_images=True))
-    text_only = ask(question, build_index(include_images=False))
+    with_images = ask(question, build_index(
+        samples_dir=samples_dir, captioner=captioner, include_images=True))
+    text_only = ask(question, build_index(samples_dir=samples_dir, include_images=False))
     return {
         "question": question,
         "expect": expect,
@@ -415,60 +417,72 @@ def _selftest() -> None:
         assert url.startswith("data:image/png;base64,")
         assert base64.b64decode(url.split(",", 1)[1]) == b"\x89PNG\r\n\x1a\nDATA"
 
-    if not any(SAMPLES_DIR.glob("*.png")):
-        raise SystemExit("Run `python make_samples.py` first — the index needs the images.")
+    # The self-test provisions its own images rather than requiring
+    # `make_samples.py` to have been run. Offline, `stub_caption()` reads only
+    # the file *name* -- no pixel is ever decoded -- so placeholder files
+    # exercise the identical loading, caching, and indexing path. That matters
+    # for more than convenience: `samples/` is gitignored and drawing real ones
+    # needs Pillow, so a checkout with neither would otherwise skip the whole
+    # image half of this test and still report success.
+    with tempfile.TemporaryDirectory() as sample_dir:
+        samples = Path(sample_dir)
+        for name in STUB_CAPTIONS:
+            (samples / name).write_bytes(b"\x89PNG\r\n\x1a\n")
 
-    # --- captions become records, and the caption is the indexed surface ---
-    image_records = load_image_records()
-    assert image_records, "expected captioned image records"
-    assert all(r.modality == IMAGE for r in image_records)
-    revenue = next(r for r in image_records if "quarterly_revenue" in r.source)
-    assert "6.1" in revenue.text, "the caption must carry the figure the chart shows"
+        # --- captions become records, and the caption is the indexed surface ---
+        image_records = load_image_records(samples_dir=samples)
+        assert len(image_records) == len(STUB_CAPTIONS), image_records
+        assert all(r.modality == IMAGE for r in image_records)
+        revenue = next(r for r in image_records if "quarterly_revenue" in r.source)
+        assert "6.1" in revenue.text, "the caption must carry the figure the chart shows"
 
-    # --- captioning is cached, so re-indexing does not re-caption ---
-    calls = {"n": 0}
+        # --- captioning is cached, so re-indexing does not re-caption ---
+        calls = {"n": 0}
 
-    def counting_captioner(path: Path) -> str:
-        calls["n"] += 1
-        return stub_caption(path)
+        def counting_captioner(path: Path) -> str:
+            calls["n"] += 1
+            return stub_caption(path)
 
-    with tempfile.TemporaryDirectory() as tmp:
-        cache = Path(tmp) / "captions.json"
-        load_image_records(captioner=counting_captioner, cache_path=cache)
+        cache = Path(sample_dir) / "captions.json"
+        load_image_records(samples_dir=samples, captioner=counting_captioner, cache_path=cache)
         first = calls["n"]
-        assert first > 0 and cache.exists()
-        load_image_records(captioner=counting_captioner, cache_path=cache)
+        assert first == len(STUB_CAPTIONS) and cache.exists()
+        load_image_records(samples_dir=samples, captioner=counting_captioner, cache_path=cache)
         assert calls["n"] == first, "second pass must be served from the cache"
 
-    # --- one index holds both modalities ---
-    index = build_index()
-    counts = index.modality_counts
-    assert counts.get(TEXT, 0) > 0 and counts.get(IMAGE, 0) > 0, counts
+        # --- if real samples exist, they must load the same way ---
+        if any(SAMPLES_DIR.glob("*.png")):
+            assert {r.source for r in load_image_records()} == set(STUB_CAPTIONS)
 
-    # --- cross-modal retrieval: a figure that exists only in a picture ---
-    answer = ask("what was Q3 revenue?", index)
-    assert answer.used_image, "the winning evidence should be the chart"
-    assert "6.1" in answer.text, answer.text
-    assert any("image" in c for c in answer.citations())
+        # --- one index holds both modalities ---
+        index = build_index(samples_dir=samples)
+        counts = index.modality_counts
+        assert counts.get(TEXT, 0) > 0 and counts.get(IMAGE, 0) > 0, counts
 
-    # --- and the text corpus genuinely does not contain it ---
-    corpus = " ".join(r.text for r in load_text_records())
-    assert "6.1" not in corpus, "the demo depends on the figure being image-only"
+        # --- cross-modal retrieval: a figure that exists only in a picture ---
+        answer = ask("what was Q3 revenue?", index)
+        assert answer.used_image, "the winning evidence should be the chart"
+        assert "6.1" in answer.text, answer.text
+        assert any("image" in c for c in answer.citations())
 
-    # --- a text question still retrieves text ---
-    margin = ask("what was gross margin?", index)
-    assert "78" in margin.text, margin.text
+        # --- and the text corpus genuinely does not contain it ---
+        corpus = " ".join(r.text for r in load_text_records())
+        assert "6.1" not in corpus, "the demo depends on the figure being image-only"
 
-    # --- the comparison shows the text-only index failing ---
-    for question, expect in IMAGE_ONLY_QUESTIONS:
-        row = compare_text_only(question, expect)
-        assert row["multimodal_found"], row
-        assert row["multimodal_used_image"], row
-        assert not row["text_only_found"], row
+        # --- a text question still retrieves text ---
+        margin = ask("what was gross margin?", index)
+        assert "78" in margin.text, margin.text
 
-    # --- an unanswerable query returns nothing rather than a wrong best guess ---
-    empty = ask("zzzz nonexistent topic qqqq", index)
-    assert not empty.hits and "No matching" in empty.text
+        # --- the comparison shows the text-only index failing ---
+        for question, expect in IMAGE_ONLY_QUESTIONS:
+            row = compare_text_only(question, expect, samples_dir=samples)
+            assert row["multimodal_found"], row
+            assert row["multimodal_used_image"], row
+            assert not row["text_only_found"], row
+
+        # --- an unanswerable query returns nothing rather than a wrong best guess ---
+        empty = ask("zzzz nonexistent topic qqqq", index)
+        assert not empty.hits and "No matching" in empty.text
 
     print(f"selftest passed: {counts.get(TEXT)} text + {counts.get(IMAGE)} image records;")
     print("caption cache verified; cross-modal retrieval cites the image;")

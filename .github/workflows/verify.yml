@@ -15,9 +15,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-verify.txt
 
-      # Every project's self-test is designed to run on the standard library
-      # alone, with no API key and no network, so the whole repository can be
-      # verified on each pull request without secrets or spend.
+      # No API key, no network calls to a model provider, no spend -- which is
+      # what makes verifying the whole repository practical on every pull
+      # request. The two libraries below are the only third-party packages any
+      # self-test needs; see requirements-verify.txt for why they are there.
+      - name: Install what the self-tests need
+        run: pip install --quiet -r requirements-verify.txt
+
       - name: Verify every project
         run: python scripts/verify_projects.py

@@ -12,8 +12,10 @@ It performs four checks and exits non-zero if any fail:
    configuration example.
 2. **compile**   — every Python file parses.
 3. **selftest**  — every project exposing `--selftest` passes it. These run with
-   no API key and no network, which is what makes checking 60+ projects on every
-   pull request practical.
+   no API key and no calls to a model provider, which is what makes checking 70+
+   projects on every pull request practical. A couple of them need `pydantic` or
+   `pandas` to demonstrate their subject at all; `requirements-verify.txt` at the
+   repository root is the complete list, and CI installs it first.
 4. **links**     — every relative Markdown link resolves.
 
 It also scans for anything shaped like a committed credential.
