@@ -1,0 +1,4 @@
+# Only needed for --online. Retrieval, the graders and --selftest all run on the
+# Python standard library alone.
+openai
+python-dotenv

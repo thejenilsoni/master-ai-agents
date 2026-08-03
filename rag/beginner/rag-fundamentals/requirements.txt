@@ -1,0 +1,5 @@
+# Only needed for --online. Retrieval, chunking and --selftest run on the
+# Python standard library alone, so you can explore the pipeline with nothing
+# installed at all.
+openai
+python-dotenv
