@@ -215,6 +215,7 @@ Useful as-is, and as blueprints for your own.
 4. [Data Analysis Agent](../applied-agents/intermediate/data-analysis-agent) — plan, compute in pandas, then flag unsupported numbers.
 5. [Job Application Agent](../applied-agents/intermediate/job-application-agent) — match a profile to a posting, then verify every claim in the draft against cited evidence.
 6. [Competitive Intel Agent](../applied-agents/advanced/competitive-intel-agent) — sourced, dated, confidence-scored competitor briefs where the diff is the product.
+7. [Customer Feedback Analyzer](../applied-agents/advanced/customer-feedback-analyzer) — rank feedback by impact rather than volume; the model labels, the code counts.
 
 ---
 
