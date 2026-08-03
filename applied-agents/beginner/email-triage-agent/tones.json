@@ -1,0 +1,57 @@
+{
+  "default": "professional",
+  "presets": {
+    "professional": {
+      "name": "professional",
+      "formality": "neutral",
+      "length": "standard",
+      "greeting": "Hi",
+      "sign_off": "Best,",
+      "use_first_names": true,
+      "guidelines": [
+        "Lead with the answer, then the context.",
+        "Confirm dates and owners explicitly.",
+        "No exclamation marks."
+      ]
+    },
+    "warm": {
+      "name": "warm",
+      "formality": "casual",
+      "length": "standard",
+      "greeting": "Hi",
+      "sign_off": "Thanks so much,",
+      "use_first_names": true,
+      "guidelines": [
+        "Acknowledge the other person's situation in the first sentence.",
+        "Keep it human, but never vague about what happens next.",
+        "At most one exclamation mark."
+      ]
+    },
+    "brief": {
+      "name": "brief",
+      "formality": "neutral",
+      "length": "brief",
+      "greeting": "Hi",
+      "sign_off": "Best,",
+      "use_first_names": true,
+      "guidelines": [
+        "Three sentences maximum.",
+        "One clear next step and who owns it.",
+        "No pleasantries beyond the greeting."
+      ]
+    },
+    "detailed-formal": {
+      "name": "detailed-formal",
+      "formality": "formal",
+      "length": "detailed",
+      "greeting": "Dear",
+      "sign_off": "Kind regards,",
+      "use_first_names": false,
+      "guidelines": [
+        "Restate the request before answering it.",
+        "Number any multi-part answer.",
+        "Avoid contractions."
+      ]
+    }
+  }
+}

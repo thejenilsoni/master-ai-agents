@@ -1,0 +1,137 @@
+{
+  "owner": {
+    "name": "Priya Raman",
+    "address": "priya.raman@harborline.example",
+    "company": "Harborline Systems"
+  },
+  "emails": [
+    {
+      "id": "m-001",
+      "subject": "Atlas Console exports failing since the 04:00 job",
+      "received_at": "2026-03-09T08:12:00",
+      "thread": [
+        {
+          "sender_name": "Tomas Brandt",
+          "sender_address": "tomas.brandt@fairhaven-logistics.example",
+          "sent_at": "2026-03-08T17:40:00",
+          "body": "Priya - our nightly Atlas export produced a zero-byte file again last night. That is the second time this week. Our warehouse planning run depends on it landing before 06:00. Can someone look?"
+        },
+        {
+          "sender_name": "Priya Raman",
+          "sender_address": "priya.raman@harborline.example",
+          "sent_at": "2026-03-08T18:05:00",
+          "body": "Thanks for flagging, Tomas. I've escalated to our platform team tonight. I'll send you a written status update by 5pm tomorrow, and if we can't identify the cause by then I'll set up a call with the engineer who owns the export pipeline."
+        },
+        {
+          "sender_name": "Tomas Brandt",
+          "sender_address": "tomas.brandt@fairhaven-logistics.example",
+          "sent_at": "2026-03-09T08:12:00",
+          "body": "It failed again this morning, so that's three nights. We are now hand-keying the planning inputs, which we cannot sustain past today. I'd like the status update you promised, and I'd also like to know whether we should switch back to the legacy export format in the meantime."
+        }
+      ]
+    },
+    {
+      "id": "m-002",
+      "subject": "Renewal paperwork for the Loomstack data feed",
+      "received_at": "2026-03-09T09:31:00",
+      "thread": [
+        {
+          "sender_name": "Elena Vasquez",
+          "sender_address": "elena.vasquez@loomstack.example",
+          "sent_at": "2026-03-09T09:31:00",
+          "body": "Hi Priya, our data feed agreement with Harborline comes up for renewal at the end of next quarter. Before I send the paperwork over, could you confirm two things: (1) whether you want to stay on the 500k-row daily tier or move up to 2M rows, and (2) who should be named as the technical contact now that Ravi has moved teams? No rush, but it helps me get the draft right the first time."
+        }
+      ]
+    },
+    {
+      "id": "m-003",
+      "subject": "Build #4821 failed on main",
+      "received_at": "2026-03-09T04:07:00",
+      "thread": [
+        {
+          "sender_name": "Harborline CI",
+          "sender_address": "no-reply@ci.harborline.example",
+          "sent_at": "2026-03-09T04:07:00",
+          "body": "Pipeline atlas-console/main build #4821 failed at stage integration-tests. Failing test: test_export_schema_roundtrip. Duration 6m12s. Commit 8f2ad19 by r.anand. This is an automated message. Do not reply to this message."
+        }
+      ]
+    },
+    {
+      "id": "m-004",
+      "subject": "URGENT ACTION REQUIRED ON YOUR ACCOUNT",
+      "received_at": "2026-03-09T02:58:00",
+      "thread": [
+        {
+          "sender_name": "Harborline Systems IT Security",
+          "sender_address": "security-desk@harborline-account-check.example",
+          "sent_at": "2026-03-09T02:58:00",
+          "body": "We detected an unrecognised sign-in. You must verify your account within 24 hours or your account will be suspended and all mailbox data removed. Click the secure portal link below and confirm your password to keep your access active. Failure to act now will result in permanent loss of access."
+        }
+      ]
+    },
+    {
+      "id": "m-005",
+      "subject": "Only today: 40% off the Q2 Operations Summit",
+      "received_at": "2026-03-09T06:00:00",
+      "thread": [
+        {
+          "sender_name": "Summit Events Team",
+          "sender_address": "hello@summit-ops-events.example",
+          "sent_at": "2026-03-09T06:00:00",
+          "body": "Operations leaders are already booking. This limited time offer gets you 40% off the full conference pass, plus a workshop day. Rates go back up at midnight. View in browser for the full agenda. If you would prefer not to hear from us, unsubscribe at the bottom of this email."
+        }
+      ]
+    },
+    {
+      "id": "m-006",
+      "subject": "Re: Review request - permissions migration runbook",
+      "received_at": "2026-03-09T10:22:00",
+      "thread": [
+        {
+          "sender_name": "Mei Okafor",
+          "sender_address": "mei.okafor@harborline.example",
+          "sent_at": "2026-03-06T11:15:00",
+          "body": "Priya, I've drafted the rollback runbook for the permissions migration. It's in the shared docs folder. Would you take a pass on the escalation section? I'm not confident I've captured what support actually needs at 2am."
+        },
+        {
+          "sender_name": "Priya Raman",
+          "sender_address": "priya.raman@harborline.example",
+          "sent_at": "2026-03-06T15:02:00",
+          "body": "Happy to. I will review the escalation section and leave comments by Wednesday. If I think it needs restructuring rather than edits, I'll say so rather than rewriting it myself."
+        },
+        {
+          "sender_name": "Mei Okafor",
+          "sender_address": "mei.okafor@harborline.example",
+          "sent_at": "2026-03-09T10:22:00",
+          "body": "Gentle nudge on this one - no pressure at all, I just want to know whether to hold the doc or start circulating it to the support leads. If you'd rather I go ahead and share the current version, that's fine too."
+        }
+      ]
+    },
+    {
+      "id": "m-007",
+      "subject": "Speaker submissions close tomorrow - Harborline slot",
+      "received_at": "2026-03-09T07:45:00",
+      "thread": [
+        {
+          "sender_name": "Nadia Sorensen",
+          "sender_address": "nadia.sorensen@northfield-devcon.example",
+          "sent_at": "2026-03-09T07:45:00",
+          "body": "Hi Priya, following up because the submission deadline for the platform track is tomorrow at 23:59 and I have not seen an abstract from Harborline yet. You mentioned in January that you wanted to talk about running a schema migration without downtime. If you can send me a title and a three-line abstract I can lodge it for you, but I need it before the deadline - after that the track is locked."
+        }
+      ]
+    },
+    {
+      "id": "m-008",
+      "subject": "Weekly platform metrics digest",
+      "received_at": "2026-03-09T05:30:00",
+      "thread": [
+        {
+          "sender_name": "Harborline Metrics",
+          "sender_address": "notifications@metrics.harborline.example",
+          "sent_at": "2026-03-09T05:30:00",
+          "body": "Week ending 2026-03-08. Atlas Console p95 latency 412ms (down 7%). Export job success rate 91.4% (down from 99.8%). Active workspaces 1,284 (up 3%). Support tickets opened 63, closed 58. This digest is generated automatically."
+        }
+      ]
+    }
+  ]
+}

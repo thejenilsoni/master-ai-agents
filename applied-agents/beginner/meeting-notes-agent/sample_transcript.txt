@@ -1,0 +1,96 @@
+Meeting: Atlas Console — Q3 Launch Readiness
+Date: 2026-03-09
+Participants: Dana Reyes (Product), Ravi Anand (Engineering), Mei Okafor (Design), Tomas Brandt (Support)
+
+[00:00] Dana Reyes: Thanks for making time. We have thirty minutes and one real
+question to answer: do we still ship Atlas Console to general availability on the
+twentieth, or do we slip it a week?
+
+[00:24] Ravi Anand: From the backend side the answer is yes, with one asterisk.
+The migration that moves workspaces off the legacy permissions table has been
+running clean in staging for nine days. No errors, no drift.
+
+[00:41] Dana Reyes: What's the asterisk?
+
+[00:44] Ravi Anand: We still have two customers on the old export format. If we
+flip the schema before they migrate, their nightly exports break silently. That's
+the part that worries me — silently.
+
+[01:02] Tomas Brandt: I can confirm which two. Support has a running list.
+Fairhaven Logistics and Belmont Retail Group. Both told us they'd move, neither
+has actually done it.
+
+[01:18] Dana Reyes: Can we hold the old format alongside the new one?
+
+[01:22] Ravi Anand: We can, for one release. It's a shim, maybe a day and a half
+of work. But I want it explicit that it's temporary, otherwise it lives forever.
+
+[01:36] Dana Reyes: Agreed. Let's do the shim and set an expiry. Ravi, can you
+freeze the export schema and land the compatibility shim by next Friday?
+
+[01:47] Ravi Anand: Yes. Next Friday works. I'll also add a deprecation warning in
+the export headers so it's visible in their tooling.
+
+[02:01] Mei Okafor: On design — the onboarding flow is done except the empty
+state for workspaces with zero connected sources. Right now it shows a spinner
+forever, which is the worst possible answer.
+
+[02:16] Dana Reyes: How long to fix?
+
+[02:18] Mei Okafor: The illustration is done. It needs the copy. If someone gives
+me final copy I can ship the empty state in two days.
+
+[02:29] Dana Reyes: I'll write the copy. I'll get it to you tomorrow.
+
+[02:34] Mei Okafor: Then I'll have the empty state merged in three days.
+
+[02:40] Tomas Brandt: Support's blocker is different. We have no runbook for the
+migration. If a workspace gets stuck halfway, nobody on my team knows what to do
+except escalate to Ravi at midnight.
+
+[02:56] Ravi Anand: That's fair and I don't want to be the runbook.
+
+[03:01] Dana Reyes: So let's decide it now: we do not go GA without a rollback
+runbook that support can execute alone. Tomas, you own the runbook, Ravi reviews
+it. Can you have a draft by Wednesday?
+
+[03:17] Tomas Brandt: Draft by Wednesday, yes. Reviewed and final I'd want by end
+of the week.
+
+[03:24] Ravi Anand: I'll review it within a day of getting it.
+
+[03:29] Dana Reyes: Good. Then the decision is: we ship on the twentieth, with the
+compatibility shim and the runbook as hard gates. If either slips, we slip.
+
+[03:42] Mei Okafor: One thing I want to flag and not resolve today — we still
+haven't decided whether the console defaults to dark mode for new workspaces.
+Marketing wants it, the accessibility audit hasn't come back.
+
+[03:58] Dana Reyes: Let's leave that open. It's not a launch blocker.
+
+[04:03] Tomas Brandt: Also open: pricing for the two customers we're shimming.
+Are they paying for the legacy format after the deprecation window?
+
+[04:14] Dana Reyes: That's a real question and I don't have an answer. I need to
+talk to the commercial side.
+
+[04:22] Ravi Anand: Last item from me. We should announce the deprecation before
+launch, not after. Otherwise every customer discovers it from a warning message.
+
+[04:35] Dana Reyes: Yes. I'll draft the deprecation notice. Let me get that out in
+two weeks so it lands after launch settles but before the shim expires.
+
+[04:48] Mei Okafor: Do we know the shim expiry date?
+
+[04:51] Ravi Anand: I'd say one release, so end of the month after launch. I'll
+put the exact date in the deprecation warning once we confirm it.
+
+[05:04] Dana Reyes: Then we're done. Ship on the twentieth, shim by next Friday,
+runbook drafted Wednesday and final by end of week, empty state in three days.
+Dark mode and legacy pricing stay open.
+
+[05:20] Tomas Brandt: Works for me.
+
+[05:22] Mei Okafor: Same.
+
+[05:24] Ravi Anand: Agreed.
