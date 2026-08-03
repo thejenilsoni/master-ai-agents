@@ -34,20 +34,26 @@ You can run this agent in Google Colab or Jupyter and access the Streamlit UI re
    ```bash
    !streamlit run /content/ai_text_to_sql_agent.py &>/content/logs.txt & npx localtunnel --port 8501 & curl ipv4.icanhazip.com
    ```
-3. **Copy the password and click the localtunnel URL** from the Colab output (url will look like `https://xxxx.loca.lt`).
-   
-   ![Copy the localtunnel URL from Colab output](images/1.png)
-   *Copy the password and click the localtunnel URL from the Colab output (step 1)*
+3. **Read two things out of that cell's output.** It prints both, one after
+   the other:
 
-4. **Enter the copied password** You will be prompted for a password.
-   
-   ![Enter the password](images/2.png)
-   *Enter the password shown in Colab output (step 2)*
+   - a localtunnel URL of the form `https://<random-words>.loca.lt`
+   - a bare IPv4 address on its own line, e.g. `34.16.203.11` — this is the
+     output of `curl ipv4.icanhazip.com`
 
-5. **Use the Streamlit interface** to upload your CSV or select a demo dataset, enter your OpenAI API key, and ask questions in natural language.
-   
-   ![Streamlit interface with example query](images/3.png)
-   *Streamlit interface showing a sample query and result (step 3)*
+4. **Open the URL, and paste the IP address as the password.** localtunnel
+   shows a "Tunnel Password" interstitial before it will forward you to the app.
+   The password is that IP address and nothing else — no `https://`, no port.
+
+   This is the step people get stuck on: the page asks for a password, the
+   notebook never uses the word "password", and the value it wants is sitting
+   further up the output looking like an unrelated diagnostic.
+
+5. **Use the Streamlit interface.** Upload a CSV or pick a demo dataset, paste
+   your OpenAI API key into the sidebar, and ask a question in plain English —
+   "which five customers spent the most last quarter?". The app shows the SQL it
+   generated above the result table, so you can check the query before trusting
+   the answer.
 
 
 ## 🧠 Thought Process of the agent

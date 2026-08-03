@@ -69,9 +69,17 @@ LangGraph belongs under `rag/`.
    documents in-memory or with small local files so a reader can run the project
    with just an LLM API key. If a project genuinely needs an external service,
    say so loudly at the top of its README.
-   **Never commit binary assets.** If a project needs images, audio, or a large
-   dataset, ship a small script that generates them locally and gitignore the
-   output.
+   **Never commit binary assets — including documentation screenshots.** If a
+   project needs images, audio, or a large dataset, ship a small script that
+   generates them locally and gitignore the output.
+
+   Screenshots feel like the obvious exception and are the most common way
+   binaries get into a repository. They are not exempt, for two reasons: they go
+   stale the first time the UI moves and nobody notices, because nobody re-reads
+   a screenshot; and a picture of a screen cannot be searched, diffed, or read by
+   someone on a slow connection. Describe the screen in prose instead — it is
+   usually shorter *and* more precise, because writing it forces you to say which
+   part actually matters. `scripts/verify_projects.py` enforces this.
 5. **A `--selftest` (or test suite) that runs on a fresh checkout.** Put the
    model behind a small interface and drive the tests with a deterministic fake,
    so the real control flow is exercised offline. Two rules make the difference

@@ -17,6 +17,8 @@ It performs four checks and exits non-zero if any fail:
    `pandas` to demonstrate their subject at all; `requirements-verify.txt` at the
    repository root is the complete list, and CI installs it first.
 4. **links**     — every relative Markdown link resolves.
+5. **binaries**  — nothing binary is committed. Sample images, audio, and data
+   are generated locally by each project's own script and gitignored.
 
 It also scans for anything shaped like a committed credential.
 
@@ -203,6 +205,43 @@ def check_secrets(roots: list[str]) -> list[str]:
     return problems
 
 
+def check_binaries(roots: list[str]) -> list[str]:
+    """Committed binary assets — the rule in CONTRIBUTING, actually enforced.
+
+    Asks git rather than walking the filesystem, because the rule is about what
+    is *committed*: locally generated samples, audio, and traces are gitignored
+    and must not be flagged. A NUL byte in the first few kilobytes is a blunt
+    but reliable test for "not text".
+
+    Documentation screenshots are not an exception. They are the most common way
+    binaries creep into a repository, they go stale the first time the UI moves,
+    and nobody notices because nobody re-reads a screenshot.
+    """
+    try:
+        listing = subprocess.run(
+            ["git", "ls-files", "-z"], cwd=REPO, capture_output=True, timeout=60
+        )
+    except (OSError, subprocess.SubprocessError):
+        return []  # not a git checkout; nothing to say
+    if listing.returncode != 0:
+        return []
+
+    problems = []
+    for rel in listing.stdout.decode("utf-8", "replace").split("\0"):
+        if not rel or rel.split("/", 1)[0] not in roots:
+            continue
+        path = os.path.join(REPO, rel)
+        try:
+            with open(path, "rb") as handle:
+                head = handle.read(8192)
+            size = os.path.getsize(path)
+        except OSError:
+            continue
+        if b"\0" in head:
+            problems.append(f"{rel}: committed binary ({size // 1024} KB)")
+    return problems
+
+
 def report(label: str, problems: list[str], ok_note: str) -> bool:
     if problems:
         print(f"[{label:<9}] {len(problems)} problem(s)")
@@ -230,6 +269,7 @@ def main() -> int:
     failed |= report("selftest", selftest_problems, f"{selftests} self-test(s) passed with no API key")
 
     failed |= report("links", check_links(roots), "all relative links resolve")
+    failed |= report("binaries", check_binaries(roots), "no committed binary assets")
     failed |= report("secrets", check_secrets(roots), "no committed credentials found")
 
     print("\nRESULT:", "FAIL" if failed else "PASS")
