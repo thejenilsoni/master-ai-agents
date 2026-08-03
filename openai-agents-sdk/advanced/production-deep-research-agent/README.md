@@ -116,9 +116,9 @@ Defaults are intentionally configurable:
 
 | Role | Default | Reasoning |
 |---|---|---|
-| Planning, synthesis, writing | `gpt-5.4` | high |
-| Parallel research workers | `gpt-5.4-mini` | medium |
-| Adversarial critic | `gpt-5.4` | high |
+| Planning, synthesis, writing | `gpt-5` | high |
+| Parallel research workers | `gpt-5-mini` | medium |
+| Adversarial critic | `gpt-5` | high |
 
 Override them through `.env`. This lets teams trade quality, latency, and cost without editing code.
 

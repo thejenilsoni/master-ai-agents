@@ -13,9 +13,9 @@ def _as_bool(value: str | None, default: bool = False) -> bool:
 
 @dataclass(frozen=True, slots=True)
 class Settings:
-    coordinator_model: str = "gpt-5.4"
-    worker_model: str = "gpt-5.4-mini"
-    critic_model: str = "gpt-5.4"
+    coordinator_model: str = "gpt-5"
+    worker_model: str = "gpt-5-mini"
+    critic_model: str = "gpt-5"
     max_subquestions: int = 6
     max_concurrency: int = 4
     min_sources: int = 8
@@ -27,9 +27,9 @@ class Settings:
     @classmethod
     def from_env(cls) -> "Settings":
         return cls(
-            coordinator_model=os.getenv("RESEARCH_COORDINATOR_MODEL", "gpt-5.4"),
-            worker_model=os.getenv("RESEARCH_WORKER_MODEL", "gpt-5.4-mini"),
-            critic_model=os.getenv("RESEARCH_CRITIC_MODEL", "gpt-5.4"),
+            coordinator_model=os.getenv("RESEARCH_COORDINATOR_MODEL", "gpt-5"),
+            worker_model=os.getenv("RESEARCH_WORKER_MODEL", "gpt-5-mini"),
+            critic_model=os.getenv("RESEARCH_CRITIC_MODEL", "gpt-5"),
             max_subquestions=int(os.getenv("RESEARCH_MAX_SUBQUESTIONS", "6")),
             max_concurrency=int(os.getenv("RESEARCH_MAX_CONCURRENCY", "4")),
             min_sources=int(os.getenv("RESEARCH_MIN_SOURCES", "8")),
