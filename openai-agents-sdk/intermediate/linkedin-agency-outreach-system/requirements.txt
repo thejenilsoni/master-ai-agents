@@ -1,6 +1,7 @@
+# Note: asyncio is part of the standard library. The PyPI package of that
+# name is an abandoned 2015 backport and must not be installed.
 openai-agents
 openai
 streamlit
 pydantic
 python-dotenv
-asyncio
