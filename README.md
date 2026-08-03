@@ -149,7 +149,7 @@ mostly **framework-free**, so what you learn transfers anywhere.
 
 ### Applied Agents
 - **Beginner** — [Meeting Notes Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/beginner/meeting-notes-agent) · [Email Triage Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/beginner/email-triage-agent)
-- **Intermediate** — [Codebase Review Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/intermediate/codebase-review-agent) · [Data Analysis Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/intermediate/data-analysis-agent)
+- **Intermediate** — [Codebase Review Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/intermediate/codebase-review-agent) · [Data Analysis Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/intermediate/data-analysis-agent) · [Job Application Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/intermediate/job-application-agent)
 
 ### Starter Kits
 *Copyable scaffolds, not tutorials — no difficulty level.*

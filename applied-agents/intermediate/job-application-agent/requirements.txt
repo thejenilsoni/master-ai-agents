@@ -1,0 +1,5 @@
+# Only needed for --online, which drafts with a model instead of templates.
+# The matching, coverage report, verification, and --selftest are all standard
+# library and run with no key.
+openai
+python-dotenv

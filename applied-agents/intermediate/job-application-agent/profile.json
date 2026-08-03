@@ -1,0 +1,108 @@
+{
+  "name": "Priya Raman",
+  "headline": "Backend engineer — data-heavy systems, streaming, and the boring reliability work",
+  "location": "Bristol, UK",
+  "email": "priya.raman@example.com",
+  "note": "Every bullet below is the ground truth for this project. Nothing the agent writes is allowed to go beyond it.",
+  "roles": [
+    {
+      "id": "tessellate",
+      "company": "Tessellate Logistics",
+      "title": "Senior Backend Engineer",
+      "start": "2021-03",
+      "end": "2025-08",
+      "skills": ["python", "postgresql", "kafka", "aws", "terraform", "docker"],
+      "bullets": [
+        {
+          "id": "tessellate-1",
+          "text": "Rebuilt shipment-status ingest from a nightly batch job into a Kafka stream, cutting status lag from 6 hours to 90 seconds for 40000 daily consignments.",
+          "skills": ["kafka", "python"]
+        },
+        {
+          "id": "tessellate-2",
+          "text": "Owned the PostgreSQL fleet through a major-version upgrade with 4 minutes of planned downtime, after rehearsing the cutover twice against a restored snapshot.",
+          "skills": ["postgresql"]
+        },
+        {
+          "id": "tessellate-3",
+          "text": "Introduced consumer-lag alerting and a replay tool after a partition rebalance silently dropped 3 hours of events; mean time to detection fell from 2 days to 11 minutes.",
+          "skills": ["kafka", "observability"]
+        },
+        {
+          "id": "tessellate-4",
+          "text": "Moved 14 services from hand-managed AWS consoles into Terraform, so environments could be rebuilt from scratch in about 25 minutes.",
+          "skills": ["terraform", "aws"]
+        },
+        {
+          "id": "tessellate-5",
+          "text": "Mentored 3 junior engineers through their first on-call rotations and wrote the runbook set the team still uses.",
+          "skills": ["mentoring"]
+        }
+      ]
+    },
+    {
+      "id": "harborlight",
+      "company": "Harborlight Analytics",
+      "title": "Backend Engineer",
+      "start": "2018-09",
+      "end": "2021-02",
+      "skills": ["python", "postgresql", "aws", "docker", "airflow"],
+      "bullets": [
+        {
+          "id": "harborlight-1",
+          "text": "Built the reporting API that served 120 client dashboards, holding p95 latency under 400ms by moving aggregate rollups into materialised views.",
+          "skills": ["python", "postgresql"]
+        },
+        {
+          "id": "harborlight-2",
+          "text": "Replaced a tangle of cron jobs with Airflow DAGs, which made failures visible and cut the weekly manual-rerun burden from about 5 hours to under 30 minutes.",
+          "skills": ["airflow", "python"]
+        },
+        {
+          "id": "harborlight-3",
+          "text": "Wrote the data-retention tooling that let the company answer deletion requests within the 30-day window, working from the legal team's specification.",
+          "skills": ["python", "postgresql"]
+        }
+      ]
+    },
+    {
+      "id": "quillmark",
+      "company": "Quillmark",
+      "title": "Junior Software Engineer",
+      "start": "2017-01",
+      "end": "2018-08",
+      "skills": ["python", "javascript", "postgresql"],
+      "bullets": [
+        {
+          "id": "quillmark-1",
+          "text": "Shipped the invoice-export feature end to end, from the Postgres schema through to the JavaScript front end.",
+          "skills": ["python", "javascript", "postgresql"]
+        },
+        {
+          "id": "quillmark-2",
+          "text": "Cut the test suite from 22 minutes to 6 by removing database round-trips from unit tests.",
+          "skills": ["python"]
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "id": "edu-bristol",
+      "institution": "University of Bristol",
+      "qualification": "BSc Computer Science",
+      "end": "2016-07"
+    }
+  ],
+  "open_source": [
+    {
+      "id": "oss-pgslice",
+      "text": "Maintains a small open-source library for safe PostgreSQL partition rotation, used by 40 or so repositories.",
+      "skills": ["postgresql", "python"]
+    }
+  ],
+  "preferences": {
+    "wants_management_track": false,
+    "notes": "Happy to mentor and lead projects; not looking for a people-management role."
+  }
+}

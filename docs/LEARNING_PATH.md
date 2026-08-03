@@ -213,6 +213,7 @@ Useful as-is, and as blueprints for your own.
 2. [Email Triage Agent](../applied-agents/beginner/email-triage-agent) — classify, extract commitments, draft replies (never sends).
 3. [Codebase Review Agent](../applied-agents/intermediate/codebase-review-agent) — bounded tree walk to findings by severity.
 4. [Data Analysis Agent](../applied-agents/intermediate/data-analysis-agent) — plan, compute in pandas, then flag unsupported numbers.
+5. [Job Application Agent](../applied-agents/intermediate/job-application-agent) — match a profile to a posting, then verify every claim in the draft against cited evidence.
 
 ---
 
