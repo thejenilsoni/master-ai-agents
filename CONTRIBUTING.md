@@ -126,11 +126,26 @@ When you add a project, also:
 
 ---
 
+## Verifying your work
+
+Before opening a pull request, run the repository verifier from the repo root:
+
+```bash
+python scripts/verify_projects.py                 # everything
+python scripts/verify_projects.py rag memory      # just these categories
+```
+
+It checks that every project has its required files, that all Python parses,
+that every `--selftest` passes with no API key, that relative links resolve, and
+that no credentials were committed. CI runs exactly this on every pull request.
+
+---
+
 ## Submitting
 
 1. Fork the repository and create a feature branch.
 2. Make sure your project runs end-to-end from a clean checkout following its
-   own README.
+   own README, and that `python scripts/verify_projects.py` passes.
 3. Open a pull request describing what the project teaches and which level it
    targets.
 

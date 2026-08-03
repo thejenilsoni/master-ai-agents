@@ -16,7 +16,11 @@ scratch](#agent-patterns), so you know what the frameworks are doing for you.
 
 Nearly every project ships a `--selftest` (or a test suite) that verifies its
 logic **without an API key**, so you can read, run, and trust the code before
-spending anything.
+spending anything. CI runs all of them on every change:
+
+```bash
+python scripts/verify_projects.py    # structure, compile, self-tests, links
+```
 
 > 📚 **New here?** Start with the [**Learning Path**](docs/LEARNING_PATH.md) — a
 > guided curriculum from your first tool-calling agent to a production-shaped

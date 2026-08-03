@@ -1,0 +1,23 @@
+name: Verify projects
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Every project's self-test is designed to run on the standard library
+      # alone, with no API key and no network, so the whole repository can be
+      # verified on each pull request without secrets or spend.
+      - name: Verify every project
+        run: python scripts/verify_projects.py
