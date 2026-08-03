@@ -1,5 +1,7 @@
 # 🧠 Master AI Agents
 
+[![Verify projects](https://github.com/thejenilsoni/master-ai-agents/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/thejenilsoni/master-ai-agents/actions/workflows/verify.yml)
+
 A curated collection of practical AI agent projects for research, automation,
 productivity, and experimentation. Each project is **self-contained**,
 **well-documented**, and ready to run with just an API key.
@@ -19,7 +21,7 @@ logic **without an API key**, so you can read, run, and trust the code before
 spending anything. CI runs all of them on every change:
 
 ```bash
-python scripts/verify_projects.py    # structure, compile, self-tests, links
+python scripts/verify_projects.py    # structure, compile, self-tests, links, binaries, secrets
 ```
 
 > 📚 **New here?** Start with the [**Learning Path**](docs/LEARNING_PATH.md) — a
