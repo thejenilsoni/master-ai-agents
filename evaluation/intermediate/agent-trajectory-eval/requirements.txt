@@ -1,0 +1,5 @@
+# The trajectory scorers and the dataset runner use the standard library only.
+# These are needed for --live, which drives a real tool-calling agent and scores
+# the trace it produces with the identical functions.
+openai
+python-dotenv

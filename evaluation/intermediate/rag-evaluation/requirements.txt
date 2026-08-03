@@ -1,0 +1,4 @@
+# The retrieval metrics and the offline grader use the standard library only.
+# These are needed for --grader openai, which does the real claim-level grading.
+openai
+python-dotenv

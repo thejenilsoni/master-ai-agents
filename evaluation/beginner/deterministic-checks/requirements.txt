@@ -1,0 +1,5 @@
+# The check library and the dataset runner use the standard library only.
+# These are needed solely for the optional --live mode, which regenerates
+# outputs with a real model before applying the same checks.
+openai
+python-dotenv
