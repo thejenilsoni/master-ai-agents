@@ -1,0 +1,57 @@
+# One file for dependencies and every tool's configuration. Scattering ruff,
+# mypy, and pytest settings across four dotfiles is how a project ends up with
+# rules nobody can find and therefore nobody follows.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentapp"
+version = "0.1.0"
+description = "An agent service."
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.40",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+]
+
+[project.scripts]
+agentapp = "agentapp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+# Live tests cost money, so they are deselected unless asked for by name.
+addopts = "-q --strict-markers --disable-warnings -m 'not live'"
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "live: hits a real API. Deselected by default; run with -m live and a key.",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src"]
+strict = true
+# Third-party stubs are patchy, and `dotenv` is imported inside a try/except so
+# it may legitimately be absent. This keeps strict mode usable on your own code
+# instead of drowning the first run in errors from someone else's package.
+[[tool.mypy.overrides]]
+module = ["openai", "openai.*", "dotenv", "dotenv.*"]
+ignore_missing_imports = true

@@ -158,6 +158,7 @@ mostly **framework-free**, so what you learn transfers anywhere.
 - [Agent Observability](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/agent-observability) — span tracing, cost estimation, secret redaction.
 - [Agent Cost Controls](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/agent-cost-controls) — budgets, caching, tier routing, circuit breaker.
 - [Streamlit Agent Chat](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/streamlit-agent-chat) — streaming chat UI over a Streamlit-free, testable engine.
+- [Agent Project Template](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/agent-project-template) — the scaffold to copy: config, logging, evals, CI, and a rename script.
 
 ---
 

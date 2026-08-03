@@ -168,6 +168,7 @@ later project builds on.
 | [Agent Observability](../starter-kits/agent-observability) | Span tracing, cost estimation, and redaction before logging. |
 | [Agent Cost Controls](../starter-kits/agent-cost-controls) | Budgets, caching, tier routing, backoff, circuit breaking. |
 | [Streamlit Agent Chat](../starter-kits/streamlit-agent-chat) | A streaming chat UI whose engine imports no Streamlit, so it can be tested. |
+| [Agent Project Template](../starter-kits/agent-project-template) | Copy-and-rename scaffold: validated config, run-id logging, offline evals, CI. |
 
 ### The capstone
 

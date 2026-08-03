@@ -1,0 +1,53 @@
+# Copy to .github/workflows/ci.yml in your own repository.
+#
+# It is kept here, inert, on purpose: a workflow file inside a template
+# directory would either be ignored (confusing) or run against the wrong
+# repository (worse).
+#
+# No secrets are needed. Every test runs against the deterministic provider,
+# which is what makes it safe to run on pull requests from forks.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Types
+        run: mypy
+
+      - name: Tests
+        run: pytest
+
+      # Live evals cost money, so they run on a schedule or by hand -- never on
+      # every pull request. Uncomment once OPENAI_API_KEY is in repo secrets.
+      # - name: Live evals
+      #   if: github.event_name == 'workflow_dispatch'
+      #   env:
+      #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      #   run: pytest -m live

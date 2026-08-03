@@ -1,0 +1,7 @@
+# pyproject.toml is the source of truth; this exists for `pip install -r`
+# workflows and for platforms that only look for a requirements file.
+openai>=1.40
+python-dotenv>=1.0
+
+# Development only:
+#   pip install -e ".[dev]"

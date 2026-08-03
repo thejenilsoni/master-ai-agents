@@ -1,0 +1,5 @@
+{"id":"weather-known-city","question":"What is the weather in Bergen?","expect_tool":"get_weather","expect_contains":["rain"],"must_not_contain":["sunny"]}
+{"id":"weather-other-city","question":"What is the forecast for Kyoto?","expect_tool":"get_weather","expect_contains":["humid"],"must_not_contain":[]}
+{"id":"currency-basic","question":"Convert 250 to eur","expect_tool":"convert_currency","expect_contains":["230"],"must_not_contain":[]}
+{"id":"unknown-question","question":"Who will win the next election?","expect_tool":null,"expect_contains":["do not know"],"must_not_contain":["probably","likely"]}
+{"id":"unknown-city","question":"What is the weather in Atlantis?","expect_tool":"get_weather","expect_contains":["no forecast"],"must_not_contain":[]}
