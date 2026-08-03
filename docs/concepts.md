@@ -7,6 +7,13 @@ definition, then go run the matching project.
 
 > New to the field? Follow [LEARNING_PATH.md](LEARNING_PATH.md) for a suggested
 > order. This page is the reference you come back to.
+>
+> Most patterns below are demonstrated twice: once inside a framework, and once
+> built from scratch in [`agent-patterns/`](../agent-patterns) so you can see the
+> machinery. Where a whole collection covers a topic in depth — [`rag/`](../rag),
+> [`memory/`](../memory), [`evaluation/`](../evaluation), [`mcp/`](../mcp),
+> [`multimodal/`](../multimodal), [`voice/`](../voice) — the collection is linked
+> from the relevant entry.
 
 ---
 
@@ -15,6 +22,7 @@ definition, then go run the matching project.
 ### Tool calling
 The model is given a set of functions and decides *when* to call them and with
 *what* arguments; your code runs the function and feeds the result back.
+- [Agent Patterns · Tool Calling from Scratch](../agent-patterns/beginner/tool-calling-from-scratch) — the loop by hand, no framework
 - [LangGraph · Customer Support](../langgraph/beginner/ai-customer-support-agent)
 - [Pydantic AI · Bank Support](../pydantic-ai/beginner/ai-bank-support-agent)
 - [Google ADK · Customer Support](../google-adk/intermediate/ai_customer_support_agent)
@@ -23,6 +31,7 @@ The model is given a set of functions and decides *when* to call them and with
 The agent alternates between *reasoning* about what to do and *acting* via a
 tool, observing each result before the next step. Most single agents are a ReAct
 loop under the hood.
+- [Agent Patterns · ReAct Loop from Scratch](../agent-patterns/beginner/react-loop-from-scratch) — the raw transcript the model actually sees
 - [smolagents · Research Assistant](../smolagents/beginner/ai-research-assistant)
 - [LangGraph · Customer Support](../langgraph/beginner/ai-customer-support-agent) (`create_react_agent`)
 
@@ -148,3 +157,21 @@ override the system's instructions.
 Measure quality with a dataset and a scoring harness instead of eyeballing
 outputs.
 - [OpenAI Agents SDK · Production Deep Research](../openai-agents-sdk/advanced/production-deep-research-agent) (`evals/`)
+
+---
+
+## Where each topic goes deep
+
+Some subjects get a whole collection rather than a single project:
+
+| Topic | Collection |
+| --- | --- |
+| Building patterns without a framework | [`agent-patterns/`](../agent-patterns) |
+| Retrieval quality (chunking, hybrid search, rewriting, reranking) | [`rag/`](../rag) |
+| Remembering across turns and sessions | [`memory/`](../memory) |
+| Measuring quality (judges, metrics, trajectories) | [`evaluation/`](../evaluation) |
+| Exposing tools over a standard protocol | [`mcp/`](../mcp) |
+| Images and documents | [`multimodal/`](../multimodal) |
+| Speech in and out | [`voice/`](../voice) |
+| Finished applications | [`applied-agents/`](../applied-agents) |
+| Running agents in production | [`starter-kits/`](../starter-kits) |

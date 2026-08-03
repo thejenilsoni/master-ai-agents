@@ -34,9 +34,6 @@ If a new project fits both axes, ask what a reader is there to learn. A LangGrap
 RAG tutorial belongs under `langgraph/`; a reranking technique that happens to use
 LangGraph belongs under `rag/`.
 
-- `<framework>` — the agent framework, lowercase (e.g. `langgraph`, `crewai`,
-  `openai-agents-sdk`, `autogen`, `pydantic-ai`, `llamaindex`, `google-adk`,
-  `smolagents`).
 - `<level>` — one of `beginner`, `intermediate`, or `advanced` (see the rubric
   below).
 - `<project-name>` — a short, descriptive slug.
@@ -80,7 +77,7 @@ LangGraph belongs under `rag/`.
    real control flow is exercised offline. Defer third-party imports into the
    functions that use them so the self-test works before dependencies are
    installed. Document it under a `## Verify it without an API key` heading.
-5. **Deterministic code that owns the invariants** — let the model reason, but
+6. **Deterministic code that owns the invariants** — let the model reason, but
    keep control flow, state, IDs, and limits in plain Python.
 
 ### Standard README template
@@ -111,7 +108,8 @@ One-paragraph description of what it does and why it's interesting.
 
 When you add a project, also:
 
-- Add it to the **framework index** in the root [`README.md`](README.md).
+- Add it to the root [`README.md`](README.md) — under the framework index or
+  the themed-collections index, matching the axis you chose.
 - If it teaches a pattern not yet covered, add a row to
   [`docs/concepts.md`](docs/concepts.md).
 - Consider where it fits in [`docs/LEARNING_PATH.md`](docs/LEARNING_PATH.md).
