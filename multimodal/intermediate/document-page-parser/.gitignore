@@ -1,0 +1,5 @@
+# Sample page images are generated locally by make_samples.py, never committed.
+samples/
+
+# Default output of `--out` (README.md stays tracked).
+/review.md

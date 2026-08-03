@@ -1,0 +1,3 @@
+# Sample charts, their ground truth, and the verification re-plots are all
+# generated locally by make_samples.py / --replot. Never committed.
+samples/
