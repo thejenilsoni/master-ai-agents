@@ -1,0 +1,4 @@
+# Audio is generated locally by make_sample_audio.py -- never commit binaries.
+audio/
+*.wav
+*.srt

@@ -1,0 +1,6 @@
+# Audio is generated locally (make_sample_audio.py or the API) -- never commit binaries.
+audio/
+*.wav
+*.mp3
+*.opus
+*.flac

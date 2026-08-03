@@ -1,0 +1,6 @@
+openai
+python-dotenv
+
+# Optional: live microphone capture. The project falls back to file input
+# when this is not installed, so it is intentionally left commented out.
+# sounddevice

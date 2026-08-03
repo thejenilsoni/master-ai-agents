@@ -1,0 +1,4 @@
+# Audio is generated locally (make_sample_audio.py, the mic, or the API).
+# Never commit binaries.
+audio/
+*.wav
