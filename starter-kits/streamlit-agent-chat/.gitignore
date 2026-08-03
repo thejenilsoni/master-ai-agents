@@ -1,0 +1,5 @@
+.env
+__pycache__/
+.pytest_cache/
+# Streamlit writes per-user settings here; only config.toml is meant to be shared.
+.streamlit/secrets.toml

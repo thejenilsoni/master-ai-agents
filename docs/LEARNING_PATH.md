@@ -167,6 +167,7 @@ later project builds on.
 | [FastAPI Agent Service](../starter-kits/fastapi-agent-service) | Auth, rate limits, SSE streaming, probes, timeouts, Docker. |
 | [Agent Observability](../starter-kits/agent-observability) | Span tracing, cost estimation, and redaction before logging. |
 | [Agent Cost Controls](../starter-kits/agent-cost-controls) | Budgets, caching, tier routing, backoff, circuit breaking. |
+| [Streamlit Agent Chat](../starter-kits/streamlit-agent-chat) | A streaming chat UI whose engine imports no Streamlit, so it can be tested. |
 
 ### The capstone
 

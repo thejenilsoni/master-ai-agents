@@ -55,8 +55,13 @@ SECRET_PATTERNS = [
 PLACEHOLDER_MARKERS = ("your_", "xxx", "...", "notarealkey", "example",
                        "placeholder", "replace", "dummy", "fake", "test")
 
-SELFTEST_MARKERS = ('add_argument("--selftest"', "add_argument('--selftest'",
-                    '== "--selftest"', "== '--selftest'")
+# Matched with a regex rather than substrings because argparse calls are often
+# wrapped across lines. A plain substring test silently skipped any project
+# whose `add_argument(` and `"--selftest"` landed on different lines, which is
+# the worst possible failure for a checker: it reports success by finding less.
+SELFTEST_PATTERN = re.compile(
+    r"""add_argument\(\s*["']--selftest["']|==\s*["']--selftest["']"""
+)
 
 
 def walk(roots: list[str]):
@@ -145,7 +150,7 @@ def check_selftests(roots: list[str]) -> tuple[list[str], int]:
         source = read(path)
         if "__main__" not in source:
             continue
-        if not any(marker in source for marker in SELFTEST_MARKERS):
+        if not SELFTEST_PATTERN.search(source):
             continue
         count += 1
         try:

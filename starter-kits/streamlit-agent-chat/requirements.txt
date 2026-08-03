@@ -1,0 +1,6 @@
+streamlit>=1.40
+
+# Only needed for live mode. The offline demo, the tests, and --selftest all run
+# on the standard library alone.
+openai
+python-dotenv

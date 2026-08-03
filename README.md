@@ -157,6 +157,7 @@ mostly **framework-free**, so what you learn transfers anywhere.
 - [FastAPI Agent Service](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/fastapi-agent-service) — auth, rate limits, SSE streaming, probes, Docker, tests.
 - [Agent Observability](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/agent-observability) — span tracing, cost estimation, secret redaction.
 - [Agent Cost Controls](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/agent-cost-controls) — budgets, caching, tier routing, circuit breaker.
+- [Streamlit Agent Chat](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/streamlit-agent-chat) — streaming chat UI over a Streamlit-free, testable engine.
 
 ---
 

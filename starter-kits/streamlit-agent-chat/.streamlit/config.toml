@@ -1,0 +1,14 @@
+# Shared UI defaults. Anything secret belongs in .streamlit/secrets.toml or .env,
+# both of which are gitignored.
+
+[server]
+# Streamlit collects usage stats by default; opt out for anything internal.
+headless = true
+fileWatcherType = "auto"
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#3b6ea5"
