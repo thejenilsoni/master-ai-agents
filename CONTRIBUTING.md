@@ -12,11 +12,27 @@ it before opening a pull request.
 
 ## Repository shape
 
-Projects are organized first by **framework**, then by **difficulty level**:
+Projects are organized along **two axes**, both using the same
+`<category>/<level>/<project-name>/` shape:
+
+1. **Framework categories** — `langgraph/`, `langchain/`, `openai-agents-sdk/`,
+   `crewai/`, `autogen/`, `pydantic-ai/`, `llamaindex/`, `google-adk/`,
+   `smolagents/`. Use these when a project's point is *how this framework does it*.
+2. **Themed categories** — `agent-patterns/`, `rag/`, `memory/`, `evaluation/`,
+   `mcp/`, `multimodal/`, `voice/`, `applied-agents/`. Use these when the point is
+   *the technique itself*. Prefer minimal dependencies here so the lesson
+   transfers; `agent-patterns/` in particular is deliberately framework-free.
 
 ```
-<framework>/<level>/<project-name>/
+<category>/<level>/<project-name>/
 ```
+
+**Exception:** `starter-kits/` holds copyable production scaffolds rather than
+tutorials, so it is flat — `starter-kits/<kit-name>/` with no difficulty level.
+
+If a new project fits both axes, ask what a reader is there to learn. A LangGraph
+RAG tutorial belongs under `langgraph/`; a reranking technique that happens to use
+LangGraph belongs under `rag/`.
 
 - `<framework>` — the agent framework, lowercase (e.g. `langgraph`, `crewai`,
   `openai-agents-sdk`, `autogen`, `pydantic-ai`, `llamaindex`, `google-adk`,
@@ -56,6 +72,14 @@ Projects are organized first by **framework**, then by **difficulty level**:
    documents in-memory or with small local files so a reader can run the project
    with just an LLM API key. If a project genuinely needs an external service,
    say so loudly at the top of its README.
+   **Never commit binary assets.** If a project needs images, audio, or a large
+   dataset, ship a small script that generates them locally and gitignore the
+   output.
+5. **A `--selftest` (or test suite) that runs with no API key.** Put the model
+   behind a small interface and drive the tests with a deterministic fake, so the
+   real control flow is exercised offline. Defer third-party imports into the
+   functions that use them so the self-test works before dependencies are
+   installed. Document it under a `## Verify it without an API key` heading.
 5. **Deterministic code that owns the invariants** — let the model reason, but
    keep control flow, state, IDs, and limits in plain Python.
 

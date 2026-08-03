@@ -2,12 +2,21 @@
 
 A curated collection of practical AI agent projects for research, automation,
 productivity, and experimentation. Each project is **self-contained**,
-**well-documented**, and ready to use or extend for your own needs — organized by
-**framework** and by **difficulty** (beginner → intermediate → advanced).
+**well-documented**, and ready to run with just an API key.
 
-The goal is to learn agentic patterns *across* frameworks: tool calling, RAG,
-multi-agent orchestration, handoffs, structured outputs, stateful graphs, and
-self-correcting loops — and to see how each framework expresses the same ideas.
+Projects are organized two ways. **By framework** (LangGraph, CrewAI, Pydantic AI,
+…), each with a beginner → intermediate → advanced ladder, so you can learn one
+tool end to end. And **by topic** (RAG, memory, evaluation, agent patterns, voice,
+…), mostly framework-free, so what you learn transfers anywhere.
+
+The goal is to understand agentic patterns rather than memorize any one library:
+tool calling, retrieval, orchestration, handoffs, structured outputs, memory,
+guardrails, and evaluation — including [building the core patterns from
+scratch](#agent-patterns), so you know what the frameworks are doing for you.
+
+Nearly every project ships a `--selftest` (or a test suite) that verifies its
+logic **without an API key**, so you can read, run, and trust the code before
+spending anything.
 
 > 📚 **New here?** Start with the [**Learning Path**](docs/LEARNING_PATH.md) — a
 > guided curriculum from your first tool-calling agent to a production-shaped
@@ -21,6 +30,7 @@ self-correcting loops — and to see how each framework expresses the same ideas
 | Framework | What it's great at |
 | --- | --- |
 | [LangGraph](#langgraph) | Stateful, graph-based agents and self-correcting loops |
+| [LangChain](#langchain) | Composable LCEL chains, routing, and fallbacks |
 | [OpenAI Agents SDK](#openai-agents-sdk) | Handoffs, agents-as-tools, hosted tools |
 | [CrewAI](#crewai) | Role-based multi-agent crews with YAML config |
 | [AutoGen](#autogen) | Conversational, code-executing agent teams |
@@ -69,10 +79,78 @@ self-correcting loops — and to see how each framework expresses the same ideas
 - **Intermediate** — [AI Customer Support Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/google-adk/intermediate/ai_customer_support_agent): A support agent with custom tools on Gemini.
 - **Advanced** — [AI Content Pipeline](https://github.com/thejenilsoni/master-ai-agents/tree/main/google-adk/advanced/ai_content_pipeline): A `SequentialAgent` chains outliner → writer → editor, sharing state between stages.
 
+### LangChain
+- **Beginner** — [LCEL Chain Basics](https://github.com/thejenilsoni/master-ai-agents/tree/main/langchain/beginner/lcel-chain-basics): The Runnable protocol and pipe composition, with a stdlib reimplementation so `|` stops being magic.
+- **Beginner** — [Tool-Calling Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/langchain/beginner/tool-calling-agent): A bounded tool-calling agent whose invariants live in Python, not the prompt.
+- **Intermediate** — [RAG Chain with Sources](https://github.com/thejenilsoni/master-ai-agents/tree/main/langchain/intermediate/rag-chain-with-sources): An explicit LCEL retrieval chain that returns answers *and* their sources.
+- **Intermediate** — [Routing and Fallbacks](https://github.com/thejenilsoni/master-ai-agents/tree/main/langchain/intermediate/routing-and-fallbacks): `RunnableBranch` routing plus retry, fallbacks, and cost-aware model selection.
+- **Advanced** — [Self-Correcting Extraction](https://github.com/thejenilsoni/master-ai-agents/tree/main/langchain/advanced/self-correcting-extraction): Strict schema + semantic validation with a bounded repair loop.
+
 ### Smol Agents
 - **Beginner** — [AI Research Assistant](https://github.com/thejenilsoni/master-ai-agents/tree/main/smolagents/beginner/ai-research-assistant): A minimal web-research agent that summarizes results with sources.
 - **Intermediate** — [AI Text-to-SQL Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/smolagents/intermediate/ai-text-to-sql-agent): Translates natural language into SQL and runs it against a database.
 - **Advanced** — [AI Research Manager](https://github.com/thejenilsoni/master-ai-agents/tree/main/smolagents/advanced/ai-research-manager): A manager `CodeAgent` orchestrates a managed web-search agent and computes with a custom tool.
+
+---
+
+## 🎯 Themed collections
+
+Beyond the framework ladders, these collections go deep on one topic. They are
+mostly **framework-free**, so what you learn transfers anywhere.
+
+| Collection | What it covers |
+| --- | --- |
+| [Agent Patterns](#agent-patterns) | Every core pattern built from scratch — what frameworks do underneath |
+| [RAG](#rag) | Chunking, hybrid search, query rewriting, reranking |
+| [Memory](#memory) | Trimming, persistence, summarizing, semantic recall, user profiles |
+| [Evaluation](#evaluation) | Judges, deterministic checks, RAG metrics, trajectory scoring |
+| [MCP](#mcp) | Model Context Protocol servers, clients, and multi-server agents |
+| [Multimodal](#multimodal) | Vision Q&A, document and chart extraction |
+| [Voice](#voice) | Transcription, speech synthesis, full voice pipelines |
+| [Applied Agents](#applied-agents) | Finished applications solving real problems |
+| [Starter Kits](#starter-kits) | Production scaffolds you copy to start a real project |
+
+### Agent Patterns
+*Built with no framework at all — just the provider SDK and plain Python.*
+- **Beginner** — [Tool Calling from Scratch](https://github.com/thejenilsoni/master-ai-agents/tree/main/agent-patterns/beginner/tool-calling-from-scratch) · [ReAct Loop from Scratch](https://github.com/thejenilsoni/master-ai-agents/tree/main/agent-patterns/beginner/react-loop-from-scratch)
+- **Intermediate** — [Plan and Execute](https://github.com/thejenilsoni/master-ai-agents/tree/main/agent-patterns/intermediate/plan-and-execute) · [Reflection Loop](https://github.com/thejenilsoni/master-ai-agents/tree/main/agent-patterns/intermediate/reflection-loop)
+- **Advanced** — [Orchestrator and Workers](https://github.com/thejenilsoni/master-ai-agents/tree/main/agent-patterns/advanced/orchestrator-workers) · [Routing and Guardrails](https://github.com/thejenilsoni/master-ai-agents/tree/main/agent-patterns/advanced/routing-and-guardrails)
+
+### RAG
+- **Beginner** — [RAG Fundamentals](https://github.com/thejenilsoni/master-ai-agents/tree/main/rag/beginner/rag-fundamentals) · [Hybrid Search RAG](https://github.com/thejenilsoni/master-ai-agents/tree/main/rag/beginner/hybrid-search-rag)
+- **Intermediate** — [Query Rewriting RAG](https://github.com/thejenilsoni/master-ai-agents/tree/main/rag/intermediate/query-rewriting-rag) · [Reranking RAG](https://github.com/thejenilsoni/master-ai-agents/tree/main/rag/intermediate/reranking-rag)
+
+### Memory
+- **Beginner** — [Conversation Buffer Memory](https://github.com/thejenilsoni/master-ai-agents/tree/main/memory/beginner/conversation-buffer-memory) · [Persistent Chat Sessions](https://github.com/thejenilsoni/master-ai-agents/tree/main/memory/beginner/persistent-chat-sessions)
+- **Intermediate** — [Summarizing Memory](https://github.com/thejenilsoni/master-ai-agents/tree/main/memory/intermediate/summarizing-memory) · [Vector Long-Term Memory](https://github.com/thejenilsoni/master-ai-agents/tree/main/memory/intermediate/vector-long-term-memory)
+- **Advanced** — [User Profile Memory](https://github.com/thejenilsoni/master-ai-agents/tree/main/memory/advanced/user-profile-memory)
+
+### Evaluation
+- **Beginner** — [LLM as Judge](https://github.com/thejenilsoni/master-ai-agents/tree/main/evaluation/beginner/llm-as-judge) · [Deterministic Checks](https://github.com/thejenilsoni/master-ai-agents/tree/main/evaluation/beginner/deterministic-checks)
+- **Intermediate** — [RAG Evaluation](https://github.com/thejenilsoni/master-ai-agents/tree/main/evaluation/intermediate/rag-evaluation) · [Agent Trajectory Eval](https://github.com/thejenilsoni/master-ai-agents/tree/main/evaluation/intermediate/agent-trajectory-eval)
+
+### MCP
+- **Beginner** — [MCP Server Basics](https://github.com/thejenilsoni/master-ai-agents/tree/main/mcp/beginner/mcp-server-basics) · [MCP Client Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/mcp/beginner/mcp-client-agent)
+- **Intermediate** — [MCP Database Server](https://github.com/thejenilsoni/master-ai-agents/tree/main/mcp/intermediate/mcp-database-server) · [MCP Filesystem Server](https://github.com/thejenilsoni/master-ai-agents/tree/main/mcp/intermediate/mcp-filesystem-server)
+- **Advanced** — [MCP Multi-Server Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/mcp/advanced/mcp-multi-server-agent)
+
+### Multimodal
+- **Beginner** — [Image Q&A Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/multimodal/beginner/image-qa-agent) · [Receipt Data Extractor](https://github.com/thejenilsoni/master-ai-agents/tree/main/multimodal/beginner/receipt-data-extractor)
+- **Intermediate** — [Chart to Data Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/multimodal/intermediate/chart-to-data-agent) · [Document Page Parser](https://github.com/thejenilsoni/master-ai-agents/tree/main/multimodal/intermediate/document-page-parser)
+
+### Voice
+- **Beginner** — [Speech-to-Text Basics](https://github.com/thejenilsoni/master-ai-agents/tree/main/voice/beginner/speech-to-text-basics) · [Text-to-Speech Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/voice/beginner/text-to-speech-agent)
+- **Intermediate** — [Voice Assistant Pipeline](https://github.com/thejenilsoni/master-ai-agents/tree/main/voice/intermediate/voice-assistant-pipeline)
+
+### Applied Agents
+- **Beginner** — [Meeting Notes Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/beginner/meeting-notes-agent) · [Email Triage Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/beginner/email-triage-agent)
+- **Intermediate** — [Codebase Review Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/intermediate/codebase-review-agent) · [Data Analysis Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/intermediate/data-analysis-agent)
+
+### Starter Kits
+*Copyable scaffolds, not tutorials — no difficulty level.*
+- [FastAPI Agent Service](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/fastapi-agent-service) — auth, rate limits, SSE streaming, probes, Docker, tests.
+- [Agent Observability](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/agent-observability) — span tracing, cost estimation, secret redaction.
+- [Agent Cost Controls](https://github.com/thejenilsoni/master-ai-agents/tree/main/starter-kits/agent-cost-controls) — budgets, caching, tier routing, circuit breaker.
 
 ---
 
@@ -98,9 +176,14 @@ cp .env.example .env
 
 ## 🗂️ Repository layout
 
+Projects are organized along two axes.
+
+**By framework** — learn one framework end to end:
+
 ```
 master-ai-agents/
 ├── langgraph/          # stateful graph agents
+├── langchain/          # composable LCEL chains
 ├── openai-agents-sdk/  # handoffs & agents-as-tools
 ├── crewai/             # role-based crews
 ├── autogen/            # code-executing agent teams
@@ -109,6 +192,21 @@ master-ai-agents/
 ├── google-adk/         # Gemini agents
 └── smolagents/         # minimal code-first agents
         └── <level>/<project-name>/
+```
+
+**By topic** — go deep on one subject, mostly framework-free:
+
+```
+├── agent-patterns/     # the patterns themselves, from scratch
+├── rag/                # retrieval techniques
+├── memory/             # remembering across turns and sessions
+├── evaluation/         # measuring quality
+├── mcp/                # Model Context Protocol
+├── multimodal/         # images and documents
+├── voice/              # speech in and out
+├── applied-agents/     # finished applications
+        └── <level>/<project-name>/
+└── starter-kits/<kit-name>/    # production scaffolds (no level)
 ```
 
 ---
