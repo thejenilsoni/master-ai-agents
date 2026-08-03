@@ -1,0 +1,4 @@
+# Snapshots you generate are per-run artifacts. The committed baseline
+# (snapshots/2026-05-01.json) is the fixture the diff demo compares against.
+snapshots/*.json
+!snapshots/2026-05-01.json

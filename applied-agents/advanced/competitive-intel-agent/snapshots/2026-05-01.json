@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-05-01",
+  "values": {
+    "Northwind Data": {
+      "entry_price_usd_month": 29.0,
+      "free_tier": true,
+      "regions": 6,
+      "sso_from": "Business"
+    },
+    "Tessera": {
+      "entry_price_usd_month": 45.0,
+      "free_tier": false,
+      "regions": 4,
+      "sla_uptime_pct": 99.9,
+      "sso_from": "Standard"
+    },
+    "Halcyon": {
+      "entry_price_usd_month": 19.0,
+      "free_tier": true,
+      "regions": 3
+    }
+  }
+}

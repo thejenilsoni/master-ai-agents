@@ -214,6 +214,7 @@ Useful as-is, and as blueprints for your own.
 3. [Codebase Review Agent](../applied-agents/intermediate/codebase-review-agent) — bounded tree walk to findings by severity.
 4. [Data Analysis Agent](../applied-agents/intermediate/data-analysis-agent) — plan, compute in pandas, then flag unsupported numbers.
 5. [Job Application Agent](../applied-agents/intermediate/job-application-agent) — match a profile to a posting, then verify every claim in the draft against cited evidence.
+6. [Competitive Intel Agent](../applied-agents/advanced/competitive-intel-agent) — sourced, dated, confidence-scored competitor briefs where the diff is the product.
 
 ---
 

@@ -1,0 +1,5 @@
+# Only needed for --online, which extracts with a model instead of rules.
+# Loading, extraction, reconciliation, diffing, and --selftest are all standard
+# library and run with no key.
+openai
+python-dotenv
