@@ -239,8 +239,10 @@ how long you keep the audio and who can listen to it.
 - Stream the reply: start synthesizing the first sentence while the model is
   still writing the second.
 - Add barge-in by watching the microphone during playback and stopping the
-  player when the user starts talking — then compare it with how the realtime
-  project does the same thing server-side.
+  player when the user starts talking — then compare it with how the
+  [realtime voice agent](../../advanced/realtime-voice-agent) does the same thing
+  server-side, where the hard part turns out to be telling the server how much
+  of its answer was actually heard.
 - Swap `ToolCallingResponder` for a LangGraph or Pydantic AI agent. Only that
   one class changes; the orchestrator does not.
 - Persist `ConversationMemory` to disk so a session survives a restart, and

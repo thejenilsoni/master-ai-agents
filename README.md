@@ -145,6 +145,7 @@ mostly **framework-free**, so what you learn transfers anywhere.
 ### Voice
 - **Beginner** — [Speech-to-Text Basics](https://github.com/thejenilsoni/master-ai-agents/tree/main/voice/beginner/speech-to-text-basics) · [Text-to-Speech Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/voice/beginner/text-to-speech-agent)
 - **Intermediate** — [Voice Assistant Pipeline](https://github.com/thejenilsoni/master-ai-agents/tree/main/voice/intermediate/voice-assistant-pipeline)
+- **Advanced** — [Realtime Voice Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/voice/advanced/realtime-voice-agent)
 
 ### Applied Agents
 - **Beginner** — [Meeting Notes Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/beginner/meeting-notes-agent) · [Email Triage Agent](https://github.com/thejenilsoni/master-ai-agents/tree/main/applied-agents/beginner/email-triage-agent)

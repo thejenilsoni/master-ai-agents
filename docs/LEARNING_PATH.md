@@ -205,6 +205,7 @@ Most real business data is a picture of a document, not clean text.
 1. [Speech-to-Text Basics](../voice/beginner/speech-to-text-basics) — transcription with chunking and timestamps.
 2. [Text-to-Speech Agent](../voice/beginner/text-to-speech-agent) — synthesis with sentence-boundary splitting.
 3. [Voice Assistant Pipeline](../voice/intermediate/voice-assistant-pipeline) — listen → think → speak, with memory and swappable stages.
+4. [Realtime Voice Agent](../voice/advanced/realtime-voice-agent) — speech to speech on one socket: server VAD, barge-in, and the truncation that keeps the transcript honest.
 
 ### [Applied Agents](../applied-agents) — finished applications
 Useful as-is, and as blueprints for your own.

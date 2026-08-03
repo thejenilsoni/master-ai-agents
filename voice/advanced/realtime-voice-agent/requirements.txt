@@ -1,0 +1,8 @@
+# Only needed for --online. The scripted scenarios and --selftest run on the
+# standard library alone.
+websocket-client
+python-dotenv
+
+# Optional: microphone capture (--mic) and speaker playback (--speaker).
+# The project imports it lazily and works without it, so it is left commented.
+# sounddevice

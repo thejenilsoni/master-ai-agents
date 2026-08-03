@@ -1,0 +1,5 @@
+# Audio is generated locally by make_sample_audio.py, by --save-audio, or by the
+# microphone. Never commit binaries.
+audio/
+*.wav
+*.pcm
