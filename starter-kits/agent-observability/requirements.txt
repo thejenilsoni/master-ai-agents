@@ -1,0 +1,6 @@
+# Runtime: none. This kit is deliberately dependency-free and uses only the Python
+# 3.11+ standard library, so you can vendor `obs/` into any project without dragging
+# a tracing SDK and its transitive dependencies along with it.
+
+# Development and tests:
+pytest>=8,<10

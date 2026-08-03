@@ -1,0 +1,11 @@
+# A persisted cache holds prompts and completions, which is customer data.
+.cache/
+.data/
+
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

@@ -1,0 +1,6 @@
+# Runtime: none. This kit is deliberately dependency-free and uses only the Python
+# 3.11+ standard library, so `costctl/` can be vendored into any project without
+# constraining the provider SDK or framework you already use.
+
+# Development and tests:
+pytest>=8,<10

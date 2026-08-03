@@ -1,0 +1,12 @@
+# Traces can contain customer text. They are redacted, but redaction is a safety net,
+# not a licence to commit them.
+traces/
+*.jsonl
+
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
