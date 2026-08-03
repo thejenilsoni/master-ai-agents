@@ -1,0 +1,37 @@
+# Template: copy into .github/workflows/ in your own repository.
+#
+# The suite runs with a deterministic judge by default, so this workflow needs
+# no API key and no secrets. Swap in the model judge (--online) only if you are
+# willing to spend on every pull request, and add OPENAI_API_KEY as a secret.
+
+name: Evaluation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      # Exits non-zero when a case fails, a threshold is breached, or a case
+      # regressed against the committed baseline. That exit code is the gate.
+      - name: Run evaluation suite
+        run: python regression_eval.py --report eval-report.md
+
+      # Keep the report even when the gate fails — that is when you want it.
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: eval-report.md

@@ -1,0 +1,6 @@
+# The accepted baseline is a per-environment artifact; create it with
+# `python regression_eval.py --save-baseline`. Commit it in your own repo if you
+# want the gate to catch regressions across pull requests.
+baseline.json
+eval-report.md
+report.md
