@@ -17,6 +17,12 @@ _PROMPT_INJECTION_PATTERNS = (
 )
 
 
+_DELIMITER = "UNTRUSTED_SOURCE_CONTENT"
+
+#: Matches the wrapper's own tags appearing *inside* fetched content.
+_DELIMITER_IN_CONTENT = re.compile(rf"<\s*/?\s*{_DELIMITER}\s*>", re.IGNORECASE)
+
+
 @dataclass(frozen=True, slots=True)
 class ContentAssessment:
     safe_text: str
@@ -25,16 +31,31 @@ class ContentAssessment:
 
 
 def assess_untrusted_content(text: str, max_chars: int = 20_000) -> ContentAssessment:
+    """Quote fetched page content so a model reads it as data, not instruction.
+
+    The wrapper is a plain text delimiter, which means the content must not be
+    able to write the delimiter itself: a page containing the closing tag would
+    otherwise end the quoted block early, and everything after it would arrive as
+    though the operator had written it. Any tag found in the content is therefore
+    neutralised, and treated as an injection attempt in its own right -- ordinary
+    prose has no reason to contain this string.
+    """
     normalized = " ".join(text.replace("\x00", " ").split())[:max_chars]
+
+    normalized, breakouts = _DELIMITER_IN_CONTENT.subn("[redacted-delimiter]", normalized)
+
     matches = tuple(
         pattern
         for pattern in _PROMPT_INJECTION_PATTERNS
         if re.search(pattern, normalized, flags=re.IGNORECASE)
     )
+    if breakouts:
+        matches = (*matches, "content contained the source-content delimiter")
+
     safe = (
-        "<UNTRUSTED_SOURCE_CONTENT>\n"
+        f"<{_DELIMITER}>\n"
         + normalized
-        + "\n</UNTRUSTED_SOURCE_CONTENT>"
+        + f"\n</{_DELIMITER}>"
     )
     return ContentAssessment(safe_text=safe, suspicious=bool(matches), matched_patterns=matches)
 
