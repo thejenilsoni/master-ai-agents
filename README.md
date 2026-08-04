@@ -16,13 +16,19 @@ tool calling, retrieval, orchestration, handoffs, structured outputs, memory,
 guardrails, and evaluation — including [building the core patterns from
 scratch](#agent-patterns), so you know what the frameworks are doing for you.
 
-Nearly every project ships a `--selftest` (or a test suite) that verifies its
-logic **without an API key**, so you can read, run, and trust the code before
-spending anything. CI runs all of them on every change:
+**65 of the 78 projects ship a `--selftest`** (or a test suite) that verifies
+their logic **without an API key**, so you can read, run, and trust the code
+before spending anything. CI runs all of them on every change:
 
 ```bash
-python scripts/verify_projects.py    # structure, compile, self-tests, links, binaries, secrets
+python scripts/verify_projects.py    # structure, compile, self-tests, coverage, links, binaries, secrets
 ```
+
+The remaining 13 are framework wiring and prompt text with no branch, parsing,
+or arithmetic of their own — there is nothing to assert that would not just be
+checking a string is non-empty. The verifier prints that split rather than
+leaving the badge to imply otherwise, and fails if a project ever loses its
+self-test.
 
 > 📚 **New here?** Start with the [**Learning Path**](docs/LEARNING_PATH.md) — a
 > guided curriculum from your first tool-calling agent to a production-shaped

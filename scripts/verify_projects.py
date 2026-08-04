@@ -6,28 +6,39 @@ Run it from the repo root:
     python scripts/verify_projects.py            # check everything
     python scripts/verify_projects.py rag memory # check specific categories
 
-It performs four checks and exits non-zero if any fail:
+It performs these checks and exits non-zero if any fail:
 
 1. **structure** — every project has a README, a dependency file, and a
    configuration example.
-2. **compile**   — every Python file parses.
+2. **compile**   — every Python file parses, and so does every code cell of
+   every notebook. A project whose only code is a `.ipynb` was invisible here
+   until that was added: "every Python file compiles" was true because there
+   were none.
 3. **selftest**  — every project exposing `--selftest` passes it. These run with
    no API key and no calls to a model provider, which is what makes checking 70+
-   projects on every pull request practical. A couple of them need `pydantic` or
-   `pandas` to demonstrate their subject at all; `requirements-verify.txt` at the
-   repository root is the complete list, and CI installs it first.
-4. **links**     — every relative Markdown link resolves.
-5. **binaries**  — nothing binary is committed. Sample images, audio, and data
+   projects on every pull request practical. A few need `pydantic`, `pandas`, or
+   a web framework to demonstrate their subject at all; `requirements-verify.txt`
+   at the repository root is the complete list, and CI installs it first.
+4. **coverage**  — how many projects actually assert something about their own
+   behaviour, stated as a number rather than implied. Structure and compile pass
+   for a project that is nothing but a prompt string, so "78 projects verified"
+   alone claims more than it has earned. `NO_BEHAVIOURAL_CHECK` lists the
+   projects with nothing to assert, and is a ratchet: losing a self-test fails,
+   and so does an entry that has gone stale.
+5. **links**     — every relative Markdown link resolves.
+6. **binaries**  — nothing binary is committed. Sample images, audio, and data
    are generated locally by each project's own script and gitignored.
 
 It also scans for anything shaped like a committed credential.
 
 The point of this script is that a reader can trust the code: if CI is green,
-every self-test in the repo passed on a clean checkout.
+every self-test in the repo passed on a clean checkout, and the coverage line
+says exactly how much of the repository that sentence covers.
 """
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import subprocess
@@ -65,6 +76,31 @@ PLACEHOLDER_MARKERS = ("your_", "xxx", "...", "notarealkey", "example",
 # the worst possible failure for a checker: it reports success by finding less.
 SELFTEST_PATTERN = re.compile(
     r"""add_argument\(\s*["']--selftest["']|==\s*["']--selftest["']"""
+)
+
+# Projects with no behavioural self-test, because there is no behaviour to
+# assert: each is a framework wiring plus prompt strings, with no branch, no
+# parsing, and no arithmetic of its own. A self-test over them could only check
+# that a prompt is a non-empty string, which would report success by checking
+# less -- the failure this script exists to prevent.
+#
+# This is a ratchet, not an amnesty. A project here that gains real logic should
+# gain a self-test and leave the list; `check_coverage` fails when an entry goes
+# stale, and fails when a project not listed here has no self-test at all.
+NO_BEHAVIOURAL_CHECK = (
+    "autogen/beginner/ai-coding-assistant",
+    "autogen/intermediate/ai-content-review-team",
+    "google-adk/advanced/ai_content_pipeline",
+    "google-adk/beginner/ai_resume_evaluator_agent",
+    "google-adk/intermediate/ai_customer_support_agent",
+    "llamaindex/beginner/ai-knowledge-base-qa",
+    "llamaindex/intermediate/ai-document-qa-agent",
+    "openai-agents-sdk/advanced/startup-idea-validator-system",
+    "openai-agents-sdk/beginner/multi-domain-research-agent",
+    "openai-agents-sdk/intermediate/linkedin-agency-outreach-system",
+    "pydantic-ai/beginner/ai-bank-support-agent",
+    "smolagents/beginner/ai-research-assistant",
+    "smolagents/intermediate/ai-text-to-sql-agent",
 )
 
 
@@ -133,6 +169,32 @@ def check_structure(projects: list[str]) -> list[str]:
     return problems
 
 
+def notebook_sources(path: str) -> list[tuple[int, str]]:
+    """Code cells of a notebook, as (cell number, source).
+
+    IPython magics and shell escapes are not Python and would fail to parse, so
+    the lines carrying them are blanked rather than dropped -- blanking keeps the
+    line numbering intact, which is the whole point of reporting a line at all.
+    """
+    try:
+        with open(path, encoding="utf-8") as handle:
+            notebook = json.load(handle)
+    except (OSError, ValueError):
+        return []
+
+    cells = []
+    for number, cell in enumerate(notebook.get("cells", []), start=1):
+        if cell.get("cell_type") != "code":
+            continue
+        source = "".join(cell.get("source", []))
+        lines = [
+            "" if line.lstrip().startswith(("%", "!", "?")) else line
+            for line in source.splitlines()
+        ]
+        cells.append((number, "\n".join(lines)))
+    return cells
+
+
 def check_compile(roots: list[str]) -> tuple[list[str], int]:
     problems = []
     files = [f for f in walk(roots) if f.endswith(".py")]
@@ -143,7 +205,20 @@ def check_compile(roots: list[str]) -> tuple[list[str], int]:
         if result.returncode != 0:
             detail = (result.stderr or "").strip().splitlines()
             problems.append(f"{os.path.relpath(path, REPO)}: {detail[-1][:160] if detail else 'failed'}")
-    return problems, len(files)
+
+    # Notebooks too. A project whose only code is a .ipynb was previously invisible
+    # here -- it could contain Python that does not parse and CI would stay green,
+    # because "every Python file compiles" was true and there were none.
+    notebooks = [f for f in walk(roots) if f.endswith(".ipynb")]
+    for path in notebooks:
+        for number, source in notebook_sources(path):
+            try:
+                compile(source, f"{path}#cell{number}", "exec")
+            except SyntaxError as exc:
+                problems.append(
+                    f"{os.path.relpath(path, REPO)}: cell {number} line {exc.lineno}: {exc.msg}"
+                )
+    return problems, len(files), len(notebooks)
 
 
 def check_selftests(roots: list[str]) -> tuple[list[str], int]:
@@ -205,6 +280,42 @@ def check_secrets(roots: list[str]) -> list[str]:
     return problems
 
 
+def project_has_selftest(project: str) -> bool:
+    for dirpath, dirnames, filenames in os.walk(project):
+        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
+        for name in filenames:
+            if name.endswith(".py") and SELFTEST_PATTERN.search(read(os.path.join(dirpath, name))):
+                return True
+    return False
+
+
+def check_coverage(projects: list[str]) -> tuple[list[str], int, int]:
+    """How many projects actually check their own behaviour.
+
+    The compile and structure checks pass for a project that is nothing but a
+    prompt string, so "78 projects verified" on its own says less than a reader
+    would reasonably assume. This reports the real number, and ratchets it:
+    NO_BEHAVIOURAL_CHECK is the list of projects known to have nothing to assert,
+    so a project that loses its self-test fails here rather than quietly dropping
+    the count, and a listed project that gains one fails too -- otherwise the list
+    rots into a permanent excuse.
+    """
+    problems: list[str] = []
+    uncovered = {
+        os.path.relpath(project, REPO).replace(os.sep, "/")
+        for project in projects
+        if not project_has_selftest(project)
+    }
+    known = set(NO_BEHAVIOURAL_CHECK)
+
+    for rel in sorted(uncovered - known):
+        problems.append(f"{rel}: no self-test, and not listed as exempt")
+    for rel in sorted(known & {os.path.relpath(p, REPO).replace(os.sep, "/") for p in projects} - uncovered):
+        problems.append(f"{rel}: now has a self-test -- remove it from NO_BEHAVIOURAL_CHECK")
+
+    return problems, len(projects) - len(uncovered), len(projects)
+
+
 def check_binaries(roots: list[str]) -> list[str]:
     """Committed binary assets — the rule in CONTRIBUTING, actually enforced.
 
@@ -262,11 +373,21 @@ def main() -> int:
     failed = False
     failed |= report("structure", check_structure(projects), "all projects have README, deps, config example")
 
-    compile_problems, python_files = check_compile(roots)
-    failed |= report("compile", compile_problems, f"{python_files} Python file(s) parse")
+    compile_problems, python_files, notebooks = check_compile(roots)
+    parsed = f"{python_files} Python file(s)" + (f" and {notebooks} notebook(s)" if notebooks else "")
+    failed |= report("compile", compile_problems, f"{parsed} parse")
 
     selftest_problems, selftests = check_selftests(roots)
     failed |= report("selftest", selftest_problems, f"{selftests} self-test(s) passed with no API key")
+
+    coverage_problems, covered, total = check_coverage(projects)
+    exempt = total - covered
+    failed |= report(
+        "coverage",
+        coverage_problems,
+        f"{covered} of {total} project(s) check their own behaviour"
+        + (f" ({exempt} have none to check)" if exempt else ""),
+    )
 
     failed |= report("links", check_links(roots), "all relative links resolve")
     failed |= report("binaries", check_binaries(roots), "no committed binary assets")
