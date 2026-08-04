@@ -15,26 +15,27 @@ owns the reasoning at each node.
 
 Runs with only an OPENAI_API_KEY. If TAVILY_API_KEY is set, the researcher does
 real web search; otherwise it answers from model knowledge and says so.
+
+    python supervisor_team.py --selftest    # no API key needed
+
+The tools are plain functions here, wrapped for LangChain only when the workers
+are built. That keeps the calculator's expression sandbox -- the one piece of
+this file with a security property to get wrong -- directly testable.
 """
 
 from __future__ import annotations
 
+import argparse
 import ast
 import operator
 import os
 import sys
-from typing import Annotated, Literal, TypedDict
+from typing import TYPE_CHECKING, Any, Literal
 
-from dotenv import load_dotenv
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
-from langchain_core.tools import tool
-from langchain_openai import ChatOpenAI
-from langgraph.graph import END, START, StateGraph
-from langgraph.graph.message import add_messages
-from langgraph.prebuilt import create_react_agent
 from pydantic import BaseModel, Field
 
-load_dotenv()
+if TYPE_CHECKING:
+    from langchain_core.messages import BaseMessage
 
 MEMBERS = ("researcher", "analyst", "writer")
 MODEL = os.getenv("SUPERVISOR_MODEL", "gpt-4o-mini")
@@ -46,7 +47,6 @@ MAX_STEPS = int(os.getenv("SUPERVISOR_MAX_STEPS", "8"))
 # --------------------------------------------------------------------------- #
 # Tools
 # --------------------------------------------------------------------------- #
-@tool
 def web_search(query: str) -> str:
     """Search the web for current information about `query` and return snippets.
 
@@ -92,7 +92,6 @@ def _safe_eval(node: ast.AST) -> float:
     raise ValueError("unsupported expression")
 
 
-@tool
 def calculator(expression: str) -> str:
     """Evaluate an arithmetic expression such as '1200 * 1.08 - 50'.
 
@@ -108,15 +107,33 @@ def calculator(expression: str) -> str:
 # --------------------------------------------------------------------------- #
 # Worker agents (each is a small prebuilt ReAct agent with its own tools)
 # --------------------------------------------------------------------------- #
-def _build_llm() -> ChatOpenAI:
+def budget_exhausted(steps: int) -> bool:
+    """Whether the supervisor must stop routing and send the work to the writer.
+
+    The team would otherwise be free to hand work back and forth for as long as the
+    model kept finding something else to check, and every lap costs money.
+    """
+    return steps >= MAX_STEPS
+
+
+def _build_llm() -> Any:
+    from langchain_openai import ChatOpenAI
+
     return ChatOpenAI(model=MODEL, temperature=0)
 
 
-def _build_workers(llm: ChatOpenAI) -> dict[str, object]:
+def _build_workers(llm: Any) -> dict[str, object]:
+    from langchain_core.tools import tool
+    from langgraph.prebuilt import create_react_agent
+
+    # `tool()` wraps the plain functions above, taking each tool's name and
+    # description from the function name and its docstring.
+    search_tool, calculator_tool = tool(web_search), tool(calculator)
+
     return {
         "researcher": create_react_agent(
             llm,
-            [web_search],
+            [search_tool],
             prompt=(
                 "You are a meticulous research specialist. Use web_search to gather "
                 "facts relevant to the current task. Never invent sources, numbers, or "
@@ -126,7 +143,7 @@ def _build_workers(llm: ChatOpenAI) -> dict[str, object]:
         ),
         "analyst": create_react_agent(
             llm,
-            [calculator],
+            [calculator_tool],
             prompt=(
                 "You are a quantitative analyst. Turn the findings into the numbers the "
                 "question needs. Use the calculator tool for every arithmetic step and "
@@ -168,21 +185,39 @@ def _last_texts(messages: list[BaseMessage], limit: int = 12) -> list[BaseMessag
 # --------------------------------------------------------------------------- #
 # Graph
 # --------------------------------------------------------------------------- #
-class TeamState(TypedDict):
-    messages: Annotated[list[BaseMessage], add_messages]
-    next: str
-    steps: int
-
-
 def build_app():
     """Compile the supervisor team into a runnable LangGraph app."""
+    from langchain_core.messages import AIMessage, BaseMessage, SystemMessage
+    from langgraph.graph import END, START, StateGraph
+    from langgraph.graph.message import add_messages
+    from typing import Annotated, TypedDict
+
+    # Defined here rather than at module scope because `add_messages` is a runtime
+    # value, and importing LangGraph at module scope would stop this file being
+    # importable -- and therefore self-testable -- without it.
+    #
+    # It must use the functional form. `from __future__ import annotations` turns a
+    # class body's annotations into strings, and LangGraph reads the reducer back
+    # with `get_type_hints`, which resolves strings against *module* globals. Names
+    # local to this function are invisible there, so the class form raises
+    # NameError on `add_messages` the moment the graph is built. The functional
+    # form stores real objects, so there is nothing left to resolve.
+    TeamState = TypedDict(
+        "TeamState",
+        {
+            "messages": Annotated[list[BaseMessage], add_messages],
+            "next": str,
+            "steps": int,
+        },
+    )
+
     llm = _build_llm()
     workers = _build_workers(llm)
     supervisor_llm = llm.with_structured_output(Route)
 
     def supervisor_node(state: TeamState) -> dict:
         steps = state.get("steps", 0)
-        if steps >= MAX_STEPS:
+        if budget_exhausted(steps):
             note = AIMessage(
                 content="[supervisor] step budget reached — sending to writer to finalize.",
                 name="supervisor",
@@ -238,8 +273,10 @@ def build_app():
 
 
 def run(question: str) -> None:
+    from langchain_core.messages import HumanMessage
+
     app = build_app()
-    initial: TeamState = {"messages": [HumanMessage(content=question)], "next": "", "steps": 0}
+    initial: dict[str, Any] = {"messages": [HumanMessage(content=question)], "next": "", "steps": 0}
     print(f"\n🧭  Question: {question}\n")
     final_answer = ""
     for update in app.stream(initial, config={"recursion_limit": 2 * MAX_STEPS + 5}):
@@ -259,10 +296,83 @@ def run(question: str) -> None:
     print(final_answer or "[no answer produced]")
 
 
+def selftest() -> int:
+    """Check the sandbox, the routing contract, and the loop bound."""
+    from typing import get_args
+
+    checks: list[tuple[str, bool]] = []
+
+    checks.append(("arithmetic works", calculator("2 + 3 * 4") == "14.0"))
+    checks.append(("parentheses are respected", calculator("(2 + 3) * 4") == "20.0"))
+    checks.append(("unary minus works", calculator("-5 + 2") == "-3.0"))
+    checks.append(("powers work", calculator("2 ** 10") == "1024.0"))
+    checks.append(("a percentage calculation works", calculator("180000 * 6 * 1.5") == "1620000.0"))
+
+    # The model chooses what goes in here, so the sandbox is the boundary. Every
+    # one of these must come back as a refusal string, never a value and never a
+    # traceback that takes the graph down with it.
+    for hostile, what in [
+        ("__import__('os').system('id')", "imports"),
+        ("().__class__.__bases__", "attribute access"),
+        ("open('/etc/passwd').read()", "calls"),
+        ("[i for i in range(10)]", "comprehensions"),
+        ("x + 1", "names"),
+        ("1 if True else 2", "conditionals"),
+        ("lambda: 1", "lambdas"),
+    ]:
+        result = calculator(hostile)
+        checks.append((f"the sandbox refuses {what}", result.startswith("[could not evaluate")))
+
+    checks.append(("malformed input is refused, not raised", calculator("2 +").startswith("[could not evaluate")))
+    checks.append(("division by zero is refused, not raised", calculator("1 / 0").startswith("[could not evaluate")))
+
+    # Without a key the researcher must be told to flag unverified claims, rather
+    # than being handed an empty result it might quietly treat as "nothing found".
+    os.environ.pop("TAVILY_API_KEY", None)
+    note = web_search("anything")
+    checks.append(("search without a backend says so", "no web-search backend" in note))
+    checks.append(("and tells the agent to flag unverified claims", "unverified" in note))
+
+    # If a member is added to MEMBERS but not to the Route schema, the supervisor
+    # can never route to it and the new specialist silently never runs.
+    options = set(get_args(Route.model_fields["next"].annotation))
+    checks.append(("every team member is a routable option", set(MEMBERS) <= options))
+    checks.append(("and FINISH is the only extra", options - set(MEMBERS) == {"FINISH"}))
+
+    checks.append(("a fresh run is within budget", not budget_exhausted(0)))
+    checks.append((f"the budget is exhausted at {MAX_STEPS} steps", budget_exhausted(MAX_STEPS)))
+    checks.append(("and stays exhausted after that", budget_exhausted(MAX_STEPS + 5)))
+
+    trimmed = _last_texts(list(range(30)), limit=12)
+    checks.append(("the routing prompt is bounded", len(trimmed) == 12))
+    checks.append(("and keeps the most recent turns", trimmed[-1] == 29))
+    checks.append(("a short conversation is passed through whole", _last_texts([1, 2]) == [1, 2]))
+
+    for label, passed in checks:
+        print(f"  [{'ok' if passed else 'FAIL'}] {label}")
+    failures = sum(1 for _, passed in checks if not passed)
+    if failures:
+        print(f"\nselftest FAILED: {failures} of {len(checks)}")
+        return 1
+    print(f"\nselftest passed: {len(checks)} checks, no API key required.")
+    return 0
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Supervisor research team built on LangGraph.")
+    parser.add_argument("question", nargs="*", help="The question for the team.")
+    parser.add_argument("--selftest", action="store_true", help="Check the sandbox and routing.")
+    args = parser.parse_args()
+
+    if args.selftest:
+        sys.exit(selftest())
+
+    from dotenv import load_dotenv
+
+    load_dotenv()
     if not os.getenv("OPENAI_API_KEY"):
         sys.exit("Set OPENAI_API_KEY (copy .env.example to .env) before running.")
-    question = " ".join(sys.argv[1:]).strip() or (
+    question = " ".join(args.question).strip() or (
         "A team of 6 engineers each costs $180k/year fully loaded. If we grow the "
         "team by 50% next year, what is the new annual cost, and what are two current "
         "best practices for onboarding engineers quickly?"
