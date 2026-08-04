@@ -12,3 +12,15 @@
 # offline path stays dependency-free.
 pydantic>=2.7,<3
 pandas>=2.0,<3
+
+# For `starter-kits/fastapi-agent-service`, whose subject *is* the HTTP surface:
+# auth returning 401 rather than 422, validation rejecting an oversized message,
+# the limiter answering 429 with a Retry-After, SSE framing. Those cannot be shown
+# without the framework, and the alternative was leaving 1500 lines of the most
+# production-shaped code in the repository checked by `py_compile` alone.
+# No key and no network: the service selects its built-in stub model when no
+# provider is configured.
+pydantic-settings>=2.0,<3
+fastapi>=0.110,<1
+httpx>=0.27,<1
+pytest>=8.0,<9

@@ -40,11 +40,34 @@ fastapi-agent-service/
 │   ├── middleware.py      # request id, timing, timeouts
 │   ├── logging_config.py  # structured JSON logging
 │   └── agent.py           # the agent itself + stub model
-├── tests/
+├── tests/                 # endpoint tests, driven through TestClient
+├── selftest.py            # runs all of the above in one command
 ├── Dockerfile
 ├── requirements.txt
 └── .env.example
 ```
+
+## Verifying it
+
+```bash
+python selftest.py --selftest    # 47 checks, no API key, no running server
+```
+
+Three layers, and none of them may quietly not run:
+
+| Layer | Needs | Covers |
+|---|---|---|
+| Rate limiter | nothing | thresholds, window expiry, `Retry-After`, memory bounds |
+| Config + stub model | pydantic | validation, refusing to serve unauthenticated, token accounting |
+| Auth + HTTP surface | fastapi, httpx, pytest | 401 vs 422, oversized input, SSE framing, 429 |
+
+The limiter takes an injectable clock, so window behaviour is checked by moving
+time forward rather than by sleeping — the suite finishes in well under a second.
+
+A missing dependency fails the run; it never skips. A self-test that shrugs and
+passes when its dependencies are absent is worse than none, because it reports
+success by checking less. `requirements-verify.txt` at the repository root
+installs exactly what the three layers need.
 
 ## How to Get Started
 

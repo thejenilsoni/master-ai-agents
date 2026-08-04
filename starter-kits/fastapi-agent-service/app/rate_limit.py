@@ -16,9 +16,20 @@ import threading
 import time
 from collections import deque
 from dataclasses import dataclass
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
-from starlette.requests import Request
+if TYPE_CHECKING:
+    # Safe here, and only here. `client_key` is called directly by the rate-limit
+    # dependency, so nothing inspects this signature at runtime -- which lets the
+    # limiter be self-tested with no web framework installed, the point of the
+    # injectable clock below.
+    #
+    # Do not copy this into `security.py`. `require_api_key` *is* a FastAPI
+    # dependency, and FastAPI resolves its annotations at runtime to distinguish a
+    # raw `Request` from a request body. Hide that import and the parameter is
+    # silently reclassified as a required body field: every call with no API key
+    # then returns 422 instead of 401, and auth stops being tested.
+    from starlette.requests import Request
 
 
 @dataclass(frozen=True, slots=True)
