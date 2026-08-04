@@ -101,10 +101,23 @@ streamlit run app/streamlit_app.py
 ## Quality checks
 
 ```bash
-make check
+python selftest.py --selftest    # 38 checks, no API key and no network
+make check                       # lint, types, and the same test suite
 ```
 
-The test suite does not require an API key. To run the live model evaluation:
+`--selftest` runs the test suite and adds checks over the two things this agent
+is most dangerous to get wrong:
+
+- **What it does with fetched pages.** Source content is attacker-controlled, so
+  it is quoted between delimiters and screened for instruction-override,
+  system-prompt extraction, citation suppression, and command execution — and
+  content cannot write the delimiter itself to escape the quoted block.
+- **When two sources are the same source.** Three URLs differing only by a
+  trailing slash, a tracking parameter, or host case collapse to one, so a single
+  page cannot masquerade as independent corroboration. The same claim from two
+  *distinct* sources is deliberately kept, because that is corroboration.
+
+Neither needs an API key. To run the live model evaluation:
 
 ```bash
 python evals/run_eval.py

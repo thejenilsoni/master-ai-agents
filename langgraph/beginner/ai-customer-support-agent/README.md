@@ -52,6 +52,19 @@ export OPENAI_API_KEY="sk-..."
 python support_agent.py
 ```
 
+## Verifying it
+
+```bash
+python support_agent.py --selftest   # 14 checks, no API key, nothing installed
+```
+
+The tools are plain functions and LangGraph is imported only inside
+`build_agent`, so the agent's logic can be checked for free. An agent whose
+tools are wrong is wrong no matter how good the model is — and the tools are
+where the quiet mistakes live. This caught one: order lookup normalised the id
+for the dictionary lookup but echoed the raw string back, so a pasted
+`"  A1001  "` was found and then reported as `Order   A1001  :`.
+
 ## Example session
 
 ```

@@ -79,6 +79,23 @@ python supervisor_team.py "Compare two vector databases for a RAG app and estima
 You'll see the supervisor's routing decisions and each specialist's output
 stream in, followed by the writer's final answer.
 
+## Verifying it
+
+```bash
+python supervisor_team.py --selftest   # 24 checks, no API key
+```
+
+The calculator's expression sandbox is the one piece of this file with a
+security property to get wrong — the model chooses what goes into it — so the
+self-test holds it to that. Imports, attribute access, calls, comprehensions,
+names, conditionals and lambdas are each refused, and malformed input and
+division by zero come back as refusals rather than exceptions that would take
+the graph down.
+
+It also checks that every member of `MEMBERS` is a routable option, so adding a
+specialist without extending the `Route` schema cannot leave it silently
+unreachable, and that the step budget still forces a finish.
+
 ## Example trace (abridged)
 
 ```

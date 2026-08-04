@@ -64,6 +64,26 @@ python research_pipeline.py "The impact of solid-state batteries on EVs"
 You will see each node log as it runs (`[plan]`, `[research]`, `[write]`,
 `[critique]`) and finally the assembled report.
 
+## Verifying it
+
+```bash
+python research_pipeline.py --selftest   # 19 checks, no API key
+```
+
+The two things most likely to be wrong here are not the prompts. They are the
+**loop bound** and the **parsing**, so both are plain functions:
+
+- `should_revise` is the only thing standing between a critic that never says
+  APPROVED and a report that gets rewritten until the budget runs out. The
+  self-test walks the loop and proves it terminates.
+- `parse_sections` tolerates the bullets and numbering a model adds after being
+  told not to, while leaving a title that merely contains a full stop — or is
+  just a year — intact.
+
+The model and the search client are built lazily for the same reason:
+constructing them at import time made the module impossible to load, let alone
+test, without credentials.
+
 ## Extending this project
 
 - Increase `MAX_REVISIONS` or make the critic stricter.

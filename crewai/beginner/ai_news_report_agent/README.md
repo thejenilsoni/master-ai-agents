@@ -62,6 +62,18 @@ Run the main script to start the news report generation process:
 python src/main.py
 ```
 
+## ✅ Verifying it
+
+```bash
+cd src && python main.py --selftest    # no API key needed
+```
+
+Agents and tasks are defined in YAML and referenced from `crew.py` by string
+key. A renamed or mistyped key is a `KeyError` that only appears once
+`kickoff()` has already started spending money, so the self-test reads both
+files and checks they agree: every key the crew asks for exists, every
+definition is actually used, and every task is assigned to an agent that exists.
+
 ## 🖥️ Usage
 
 - The application will automatically gather news, analyze content, and generate a structured report saved in the `output/` directory.

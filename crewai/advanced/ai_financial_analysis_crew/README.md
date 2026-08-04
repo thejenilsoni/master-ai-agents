@@ -68,6 +68,27 @@ python main.py
 By default it analyzes **NVDA**. Edit the `inputs` in `src/main.py` to point at a
 different ticker/company. The final brief is written to `output/equity_research_brief.md`.
 
+## Verifying it
+
+```bash
+cd src && python main.py --selftest    # 34 checks, no API key, no market data
+```
+
+Two things are checked, both of which fail expensively otherwise:
+
+**The configuration.** Agents and tasks are defined in YAML and referenced from
+`crew.py` by string key, so a renamed or mistyped key is a `KeyError` that only
+appears once `kickoff()` has started calling a paid model. The self-test reads
+both files and checks they agree — including that every task is assigned to an
+agent that exists.
+
+**The stock tool.** Response shaping lives in `percent_change` and
+`build_payload`, outside the network call, so it can be checked with no market
+data. A zero opening price yields no figure rather than dividing by zero inside
+a tool call, and fields the provider did not return are dropped rather than sent
+as nulls — a model shown `"trailing_pe": null` will sometimes reason about it as
+a P/E of zero.
+
 ## ⚠️ Disclaimer
 
 This project is for educational and demonstration purposes only. Its output is
