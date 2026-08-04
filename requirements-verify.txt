@@ -24,3 +24,9 @@ pydantic-settings>=2.0,<3
 fastapi>=0.110,<1
 httpx>=0.27,<1
 pytest>=8.0,<9
+
+# The CrewAI projects define every agent and task in YAML and reference them by
+# string key from Python. A renamed or mistyped key is a KeyError that surfaces
+# only after kickoff() has started spending money, so the self-tests read both
+# files and compare them. Already a CrewAI dependency; tiny on its own.
+pyyaml>=6,<7

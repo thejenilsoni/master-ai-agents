@@ -4,7 +4,7 @@ from crewai_tools import SerperDevTool
 
 from dotenv import load_dotenv
 
-from tools import StockDataTool
+from tools import build_stock_data_tool
 
 load_dotenv()
 
@@ -22,7 +22,7 @@ class FinancialAnalysisCrew:
         return Agent(
             config=self.agents_config["market_data_analyst"],
             verbose=True,
-            tools=[StockDataTool()],
+            tools=[build_stock_data_tool()],
         )
 
     @agent
